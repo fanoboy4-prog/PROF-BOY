@@ -1,118 +1,24 @@
 <!DOCTYPE html>
-<html lang="mg">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BOY PROF - FL STUDIO SUR PC - 3 LANGUES</title>
-<style>
-body{font-family:sans-serif;background:#111;color:#fff;margin:0;padding:14px}
-.pc{background:#ff0000;color:#fff;padding:14px;border-radius:14px;text-align:center;font-weight:bold;font-size:16px;margin:10px 0}
-button{padding:12px 16px;border-radius:12px;border:none;font-weight:bold;cursor:pointer}
-.lang button{background:#222;color:#fff;margin:4px}
-.lang button.active{background:#ff6a00;transform:scale(1.1)}
-input{width:100%;padding:14px;border-radius:12px;border:none;margin:14px 0;font-size:16px}
-.card{background:#1e1e1e;padding:16px;border-radius:16px;margin:10px 0;cursor:pointer}
-.card h3{margin:0 0 6px;color:#ff6a00}
-.step{background:#2a2a2a;padding:14px;border-radius:12px;margin:8px 0;line-height:1.6}
-.back{background:#333;color:#fff;margin-bottom:12px}
-.badge{background:#ff6a00;color:#fff;padding:4px 8px;border-radius:20px;font-size:12px}
-.fl{border:3px solid #ff6a00;border-radius:16px;overflow:hidden;background:#1a1a1a;margin:12px 0}
-.fl-top{background:#2b2b2b;padding:10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.fl-top span{background:#444;padding:8px 10px;border-radius:8px;font-size:12px;font-weight:bold}
-.fl-top .play{background:#00c853;color:#fff}
-.fl-top .bpm{background:#ff6a00}
-.fl-top .vol{background:#2196f3}
-.fl-body{display:grid;grid-template-columns:90px 1fr 90px;gap:6px;padding:8px}
-.fl-box{background:#222;border:2px solid #444;border-radius:12px;padding:10px;min-height:90px}
-.fl-box b{color:#ff6a00;font-size:13px}
-.fl-box p{font-size:11px;color:#ccc;margin:6px 0 0;line-height:1.4}
-.arrow{color:#ff6a00;font-weight:bold;font-size:13px;margin:6px 0;display:block}
-.legend{background:#1e1e1e;border-radius:14px;padding:12px;margin:12px 0}
-.legend div{padding:8px 0;border-bottom:1px solid #333;font-size:14px;line-height:1.5}
-.legend b{color:#ff6a00}
-.piano{display:flex;gap:4px;margin:12px 0;flex-wrap:wrap}
-.key{background:#fff;color:#000;padding:18px 10px;border-radius:8px;cursor:pointer;font-weight:bold;flex:1;text-align:center}
-.key.black{background:#000;color:#fff}
-.key:active{background:#ff6a00;color:#fff}
-.grid{display:grid;grid-template-columns:40px repeat(16,1fr);gap:2px;margin:12px 0;overflow-x:auto}
-.cell{background:#222;height:28px;border-radius:4px;cursor:pointer}
-.cell.on{background:#ff6a00}
-.mini{border:2px solid #444;border-radius:14px;padding:12px;margin:10px 0;background:#1a1a1a}
-.mini b{color:#ff6a00}
-.kbd{background:#000;color:#ff6a00;padding:3px 7px;border-radius:6px;border:1px solid #555;font-weight:bold}
-.challenge{background:linear-gradient(90deg,#ff6a00,#ff0055);padding:16px;border-radius:16px;margin:12px 0}
-</style>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>BOY PROF TEST</title>
+<style>body{background:#111;color:#fff;font-family:sans-serif;padding:20px}button{padding:12px;margin:4px;border-radius:12px;border:none;font-weight:bold}button.active{background:#ff6a00}</style>
 </head>
 <body>
-<div id="app"></div>
+<h1>BOY PROF OFFLINE</h1>
+<p id="msg">FL STUDIO SUR PC - TSY PHONE</p>
+<button onclick="setLang('mg')" id="b-mg">Gasy</button>
+<button onclick="setLang('fr')" id="b-fr">Francais</button>
+<button onclick="setLang('en')" id="b-en">English</button>
+<div id="box" style="background:#222;padding:16px;border-radius:14px;margin-top:14px"></div>
 <script>
-let lang = localStorage.getItem('lang') || 'mg';
-let current = null;
-let query = '';
-const T = {
-mg:{
-title:'BOY PROF OFFLINE',sub:'FL STUDIO SUR PC - 3 Langues - Gasy / Français / English',search:'Anontanio... ex: volume, mixer, piano roll...',back:'← Miverina',understood:'Azoko ✅ - Lesona manaraka →',
-guide:'🖥️ FL STUDIO SUR PC - SARY INTERFACE PC',tap:'👆 Tsindrio ny bokotra langue eo ambony - hiova daholo ny soratra!',
-piano:'🎹 PIANO ROLL - TSINDIO NY NOTE',beatmaker:'🥁 BEATMAKER',
-pcbar:'🖥️ FL STUDIO SUR PC - TSY PHONE - Ity app ity = TOROLALANA @ Phone - Ny FL Studio tena izy = @ PC',
-bpmLabel:'Hafaingan\'ny hira @ PC',volLabel:'Hery ny feo @ PC',
-browser:'BROWSER @ PC',browserDesc:'Trano fitahirizana feo @ PC',browserArrow:'⬅️ Flèche manondro BROWSER @ PC = Double-clic @ souris',
-rack:'CHANNEL RACK @ PC',rackArrow:'⬆️ Flèche manondro CHANNEL RACK @ PC = Clic @ souris',
-mixer:'MIXER @ PC',mixerArrow:'➡️ Flèche manondro MIXER @ PC = Tariho volume @ souris',
-pianoRoll:'PIANO ROLL @ PC',pianoArrow:'🎹 Flèche manondro PIANO ROLL @ PC = Eo anaovana melody @ souris',
-playlist:'PLAYLIST @ PC',playlistArrow:'⬇️ Flèche manondro PLAYLIST @ PC = Eo andaminana hira @ souris',
-white:'Note fotsy',black:'Note mainty',up:'Miakatra = feo avo',down:'Midina = feo ambany',
-intro:'INTRO - 8s - melody fotsiny',couplet:'COUPLET - Kick + Bass',refrain:'REFRAIN - REHETRA',outro:'OUTRO - esorina tsikelikely',
-happy:'C-E-G = Faly',sad:'A-C-E = Rap Gasy',
-leg1:'🖥️ PC IHANY - TSY PHONE - FL Studio = Logiciel PC. Ity app ity = Torolalana @ Phone fotsiny.',
-leg2:'▶ PLAY ➡️ - @ PC - Tsindrio ESPACE @ clavier PC',leg3:'🔊 VOLUME ➡️ - @ PC - Flèche manondro VOLUME = Tariho @ souris PC - 80% = tsara',
-leg4:'🎵 BPM ➡️ - @ PC - Flèche manondro BPM = Soraty @ clavier PC - 90 = Rap Gasy',
-leg5:'📁 BROWSER ➡️ - @ PC - Double-clic @ souris',leg6:'🥁 CHANNEL RACK ➡️ - @ PC - Clic @ souris - F6',
-leg7:'🎹 PIANO ROLL ➡️ - @ PC - Clic droit @ souris - F7',leg8:'⬇️ PLAYLIST ➡️ - @ PC - Tariho @ souris - F5',leg9:'🎚️ MIXER ➡️ - @ PC - Tariho volume @ souris - F9'
-},
-fr:{
-title:'BOY PROF OFFLINE',sub:'FL STUDIO SUR PC - 3 Langues - Gasy / Français / English',search:'Pose ta question... ex: volume, mixer, piano roll...',back:'← Retour',understood:"J'ai compris ✅ - Leçon suivante →",
-guide:'🖥️ FL STUDIO SUR PC - IMAGE INTERFACE PC',tap:'👆 Clique sur le bouton langue en haut - tout le texte va changer !',
-piano:'🎹 PIANO ROLL - CLIQUE UNE NOTE',beatmaker:'🥁 BEATMAKER',
-pcbar:'🖥️ FL STUDIO SUR PC - PAS PHONE - Cette app = GUIDE sur Phone - Le vrai FL Studio = sur PC',
-bpmLabel:'Vitesse de la chanson sur PC',volLabel:'Force du son sur PC',
-browser:'BROWSER SUR PC',browserDesc:'Maison où on stocke les sons sur PC',browserArrow:'⬅️ Flèche pointe BROWSER SUR PC = Double-clic à la souris',
-rack:'CHANNEL RACK SUR PC',rackArrow:'⬆️ Flèche pointe CHANNEL RACK SUR PC = Clic à la souris',
-mixer:'MIXER SUR PC',mixerArrow:'➡️ Flèche pointe MIXER SUR PC = Glisse volume à la souris',
-pianoRoll:'PIANO ROLL SUR PC',pianoArrow:'🎹 Flèche pointe PIANO ROLL SUR PC = Là on fait la mélodie à la souris',
-playlist:'PLAYLIST SUR PC',playlistArrow:'⬇️ Flèche pointe PLAYLIST SUR PC = Là on arrange la chanson à la souris',
-white:'Note blanche',black:'Note noire',up:'Monte = son aigu',down:'Descend = son grave',
-intro:'INTRO - 8s - mélodie seule',couplet:'COUPLET - Kick + Bass',refrain:'REFRAIN - TOUT',outro:'OUTRO - enlève petit à petit',
-happy:'C-E-G = Joyeux',sad:'A-C-E = Rap Gasy',
-leg1:'🖥️ PC SEULEMENT - PAS PHONE - FL Studio = Logiciel PC. Cette app = Guide sur Phone seulement.',
-leg2:'▶ PLAY ➡️ - Sur PC - Appuie ESPACE sur clavier PC',leg3:'🔊 VOLUME ➡️ - Sur PC - Flèche pointe VOLUME = Glisse à la souris PC - 80% = bon',
-leg4:'🎵 BPM ➡️ - Sur PC - Flèche pointe BPM = Tape sur clavier PC - 90 = Rap Gasy',
-leg5:'📁 BROWSER ➡️ - Sur PC - Double-clic à la souris',leg6:'🥁 CHANNEL RACK ➡️ - Sur PC - Clic à la souris - F6',
-leg7:'🎹 PIANO ROLL ➡️ - Sur PC - Clic droit à la souris - F7',leg8:'⬇️ PLAYLIST ➡️ - Sur PC - Glisse à la souris - F5',leg9:'🎚️ MIXER ➡️ - Sur PC - Glisse volume à la souris - F9'
-},
-en:{
-title:'BOY PROF OFFLINE',sub:'FL STUDIO ON PC - 3 Languages - Gasy / Français / English',search:'Ask... ex: volume, mixer, piano roll...',back:'← Back',understood:'Got it ✅ - Next lesson →',
-guide:'🖥️ FL STUDIO ON PC - PC INTERFACE IMAGE',tap:'👆 Tap language button on top - all text will change!',
-piano:'🎹 PIANO ROLL - TAP A NOTE',beatmaker:'🥁 BEATMAKER',
-pcbar:'🖥️ FL STUDIO ON PC - NOT PHONE - This app = GUIDE on Phone - Real FL Studio = on PC',
-bpmLabel:'Speed of song on PC',volLabel:'Power of sound on PC',
-browser:'BROWSER ON PC',browserDesc:'House where sounds are stored on PC',browserArrow:'⬅️ Arrow points BROWSER ON PC = Double-click with mouse',
-rack:'CHANNEL RACK ON PC',rackArrow:'⬆️ Arrow points CHANNEL RACK ON PC = Click with mouse',
-mixer:'MIXER ON PC',mixerArrow:'➡️ Arrow points MIXER ON PC = Drag volume with mouse',
-pianoRoll:'PIANO ROLL ON PC',pianoArrow:'🎹 Arrow points PIANO ROLL ON PC = There you make melody with mouse',
-playlist:'PLAYLIST ON PC',playlistArrow:'⬇️ Arrow points PLAYLIST ON PC = There you arrange song with mouse',
-white:'White note',black:'Black note',up:'Up = high sound',down:'Down = low sound',
-intro:'INTRO - 8s - melody only',couplet:'VERSE - Kick + Bass',refrain:'CHORUS - ALL',outro:'OUTRO - remove slowly',
-happy:'C-E-G = Happy',sad:'A-C-E = Rap Gasy',
-leg1:'🖥️ PC ONLY - NOT PHONE - FL Studio = PC Software. This app = Guide on Phone only.',
-leg2:'▶ PLAY ➡️ - On PC - Press SPACE on PC keyboard',leg3:'🔊 VOLUME ➡️ - On PC - Arrow points VOLUME = Drag with PC mouse - 80% = good',
-leg4:'🎵 BPM ➡️ - On PC - Arrow points BPM = Type on PC keyboard - 90 = Rap Gasy',
-leg5:'📁 BROWSER ➡️ - On PC - Double-click with mouse',leg6:'🥁 CHANNEL RACK ➡️ - On PC - Click with mouse - F6',
-leg7:'🎹 PIANO ROLL ➡️ - On PC - Right-click with mouse - F7',leg8:'⬇️ PLAYLIST ➡️ - On PC - Drag with mouse - F5',leg9:'🎚️ MIXER ➡️ - On PC - Drag volume with mouse - F9'
-}
+let lang='mg';
+let D={
+mg:{msg:'FL STUDIO SUR PC - TSY PHONE',box:'BPM = Hafaingan ny hira - VOLUME = Hery ny feo - BROWSER = Eo alaina feo'},
+fr:{msg:'FL STUDIO SUR PC - PAS PHONE',box:'BPM = Vitesse de la chanson - VOLUME = Force du son - BROWSER = La on prend les sons'},
+en:{msg:'FL STUDIO ON PC - NOT PHONE',box:'BPM = Speed of song - VOLUME = Power of sound - BROWSER = There you take sounds'}
 };
-const lessons = [
-{id:0,cat:'PC • INSTALL',title:{mg:'0. Ahoana ny fametrahana FL Studio @ PC?',fr:'0. Comment installer FL Studio sur PC?',en:'0. How to install FL Studio on PC?'},steps:{
-mg:['FL STUDIO = LOGICIEL PC - Windows / Mac. TSY application phone.','@ PC: Sokafy Chrome @ PC > "FL Studio download" > Site Image-Line > Download Trial GRATUIT.','Install: Double-clic @ .exe > Next > Install > Finish.','CLAVIER PC: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, ESPACE = Play.','SOURIS PC: Clic gauche = Choisir, Clic droit = Menu, Molette = Zoom.'],
-fr:['FL STUDIO = LOGICIEL PC - Windows / Mac. PAS une application phone.','Sur PC: Ouvre Chrome sur PC > "FL Studio download" > Site Image-Line > Download Trial GRATUIT.','Install: Double-clic sur .exe > Next > Install > Finish.','CLAVIER PC: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, ESPACE = Play.','SOURIS PC: Clic gauche = Choisir, Clic droit = Menu, Molette = Zoom.'],
-en:['FL STUDIO = PC SOFTWARE - Windows / Mac. NOT a phone
+function setLang(l){lang=l;document.getElementById('msg').innerText=D[l].msg;document.getElementById('box').innerText=D[l].box;}
+setLang('mg');
+</script>
+</body>
+</html>
