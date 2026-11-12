@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BOY PROF OFFLINE - FL STUDIO</title>
+<style>
+body{font-family:sans-serif;background:#111;color:#fff;margin:0;padding:16px}
+button{padding:12px 16px;border-radius:12px;border:none;font-weight:bold;cursor:pointer}
+.lang button{background:#222;color:#fff;margin:4px}
+.lang button.active{background:#ff6a00}
+input{width:100%;padding:14px;border-radius:12px;border:none;margin:14px 0;font-size:16px}
+.card{background:#1e1e1e;padding:16px;border-radius:16px;margin:10px 0;cursor:pointer}
+.card h3{margin:0 0 6px;color:#ff6a00}
+.step{background:#2a2a2a;padding:12px;border-radius:12px;margin:8px 0}
+.back{background:#333;color:#fff;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+let lang = localStorage.getItem('lang') || 'mg';
+let current = null;
+let query = '';
+const T = {
+mg:{title:'BOY PROF OFFLINE',sub:'FL STUDIO - @ Tenin Gasy',search:'Anontanio... ex: beat, melody...',back:'← Miverina',understood:'Azoko ✅'},
+fr:{title:'BOY PROF OFFLINE',sub:'FL STUDIO - En Français',search:'Pose ta question... ex: beat, mélodie...',back:'← Retour',understood:"J'ai compris ✅"},
+en:{title:'BOY PROF OFFLINE',sub:'FL STUDIO - In English',search:'Ask... ex: beat, melody...',back:'← Back',understood:'Got it ✅'}
+};
+const lessons = [
+{id:1,title:{mg:'1. Inona ny FL Studio?',fr:'1. Cest quoi FL Studio?',en:'1. What is FL Studio?'},steps:{
+mg:['FL Studio = logiciel anaovana mozika / beat.','Sokafy - mahita Playlist, Channel Rack, Mixer ianao.','Atombohy @ projet vaovao foana.'],
+fr:['FL Studio = logiciel pour faire de la musique / beat.','Ouvre-le - tu vois Playlist, Channel Rack, Mixer.','Commence toujours par un nouveau projet.'],
+en:['FL Studio = software to make music / beat.','Open it - you see Playlist, Channel Rack, Mixer.','Always start with a new project.']}},
+{id:2,title:{mg:'2. Manao Beat / Drum',fr:'2. Créer un Beat / Drum',en:'2. Make a Beat / Drum'},steps:{
+mg:['Mandehana @ Channel Rack.','Tsindrio Kick - apetraho @ 1, 5, 9, 13.','Ampio Clap @ 5 sy 13.','Ampio Hi-Hat @ isaky ny 2.','Tsindrio Play - henoy!'],
+fr:['Va dans Channel Rack.','Clique Kick - mets-le sur 1, 5, 9, 13.','Ajoute Clap sur 5 et 13.','Ajoute Hi-Hat tous les 2 temps.','Appuie Play - écoute!'],
+en:['Go to Channel Rack.','Click Kick - put it on 1, 5, 9, 13.','Add Clap on 5 and 13.','Add Hi-Hat every 2 steps.','Press Play - listen!']}},
+{id:3,title:{mg:'3. Mametraka Melody',fr:'3. Ajouter une Mélodie',en:'3. Add a Melody'},steps:{
+mg:['Tsindrio havanana @ instrument - Piano Roll.','Safidio note - ohatra C, E, G.','Apetraho tsikelikely - aza maika.','Henoy - ovay raha tsy mety.'],
+fr:['Clic droit sur instrument - Piano Roll.','Choisis des notes - ex: C, E, G.','Place-les doucement - ne te presse pas.','Écoute - change si ça ne va pas.'],
+en:['Right-click instrument - Piano Roll.','Choose notes - ex: C, E, G.','Place them slowly - dont rush.','Listen - change if not good.']}},
+{id:4,title:{mg:'4. Exporter @ MP3',fr:'4. Exporter en MP3',en:'4. Export to MP3'},steps:{
+mg:['Tsindrio File > Export > MP3.','Safidio qualité - 320kbps.','Safidio toerana hitahirizana.','Tsindrio Start - vita!'],
+fr:['Clique File > Export > MP3.','Choisis qualité - 320kbps.','Choisis où enregistrer.','Clique Start - fini!'],
+en:['Click File > Export > MP3.','Choose quality - 320kbps.','Choose where to save.','Click Start - done!']}}
+];
+function render(){
+const t=T[lang];
+let html=`<h1>${t.title}</h1><p>${t.sub}</p><div class="lang">
+<button class="${lang==='mg'?'active':''}" onclick="setLang('mg')">🇲🇬 Gasy</button>
+<button class="${lang==='fr'?'active':''}" onclick="setLang('fr')">🇫🇷 Français</button>
+<button class="${lang==='en'?'active':''}" onclick="setLang('en')">🇬🇧 English</button></div>`;
+if(!current){
+html+=`<input placeholder="${t.search}" oninput="query=this.value;render()" value="${query}">`;
+let list=lessons.filter(l=>l.title[lang].toLowerCase().includes(query.toLowerCase())||l.steps[lang].join(' ').toLowerCase().includes(query.toLowerCase()));
+list.forEach(l=>{html+=`<div class="card" onclick="openLesson(${l.id})"><h3>${l.title[lang]}</h3><p>${l.steps[lang][0]}</p></div>`});
+}else{
+let l=lessons.find(x=>x.id===current);
+html+=`<button class="back" onclick="current=null;render()">${t.back}</button><h2>${l.title[lang]}</h2>`;
+l.steps[lang].forEach((s,i)=>{html+=`<div class="step"><b>Étape ${i+1}:</b> ${s}</div>`});
+html+=`<button style="background:#ff6a00;color:#fff;width:100%;margin-top:12px" onclick="current=null;render()">${t.understood}</button>`;
+}
+document.getElementById('app').innerHTML=html;
+}
+function setLang(l){lang=l;localStorage.setItem('lang',l);render()}
+function openLesson(id){current=id;render()}
+render();
+</script>
+</body>
+</html>
