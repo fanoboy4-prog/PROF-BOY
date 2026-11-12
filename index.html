@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BOY PROF OFFLINE - FL STUDIO</title>
+<title>BOY PROF OFFLINE - FL STUDIO COMPLET</title>
 <style>
 body{font-family:sans-serif;background:#111;color:#fff;margin:0;padding:16px}
 button{padding:12px 16px;border-radius:12px;border:none;font-weight:bold;cursor:pointer}
@@ -12,8 +12,21 @@ button{padding:12px 16px;border-radius:12px;border:none;font-weight:bold;cursor:
 input{width:100%;padding:14px;border-radius:12px;border:none;margin:14px 0;font-size:16px}
 .card{background:#1e1e1e;padding:16px;border-radius:16px;margin:10px 0;cursor:pointer}
 .card h3{margin:0 0 6px;color:#ff6a00}
-.step{background:#2a2a2a;padding:12px;border-radius:12px;margin:8px 0}
+.step{background:#2a2a2a;padding:14px;border-radius:12px;margin:8px 0;line-height:1.6}
 .back{background:#333;color:#fff;margin-bottom:12px}
+.badge{background:#ff6a00;color:#fff;padding:4px 8px;border-radius:20px;font-size:12px}
+.video{background:#000;padding:12px;border-radius:16px;margin:12px 0}
+.video a{color:#ff6a00;font-weight:bold}
+.piano{display:flex;gap:4px;margin:12px 0;flex-wrap:wrap}
+.key{background:#fff;color:#000;padding:18px 10px;border-radius:8px;cursor:pointer;font-weight:bold;flex:1;text-align:center}
+.key.black{background:#000;color:#fff}
+.key:active,.key.playing{background:#ff6a00;color:#fff}
+.grid{display:grid;grid-template-columns:40px repeat(16,1fr);gap:2px;margin:12px 0;overflow-x:auto}
+.cell{background:#222;height:28px;border-radius:4px;cursor:pointer}
+.cell.on{background:#ff6a00}
+.cell.kick{background:#ff3b30}.cell.clap{background:#ffcc00}.cell.hat{background:#00c853}
+.note{font-size:12px;color:#aaa}
+.challenge{background:linear-gradient(90deg,#ff6a00,#ff0055);padding:16px;border-radius:16px;margin:12px 0}
 </style>
 </head>
 <body>
@@ -23,28 +36,45 @@ let lang = localStorage.getItem('lang') || 'mg';
 let current = null;
 let query = '';
 const T = {
-mg:{title:'BOY PROF OFFLINE',sub:'FL STUDIO - @ Tenin Gasy',search:'Anontanio... ex: beat, melody...',back:'← Miverina',understood:'Azoko ✅'},
-fr:{title:'BOY PROF OFFLINE',sub:'FL STUDIO - En Français',search:'Pose ta question... ex: beat, mélodie...',back:'← Retour',understood:"J'ai compris ✅"},
-en:{title:'BOY PROF OFFLINE',sub:'FL STUDIO - In English',search:'Ask... ex: beat, melody...',back:'← Back',understood:'Got it ✅'}
+mg:{title:'BOY PROF OFFLINE',sub:'FL STUDIO COMPLET - Gasy / Rap Gasy / Piano Roll / Video',search:'Anontanio... ex: 808, rap gasy, piano roll, mixer...',back:'← Miverina',understood:'Azoko ✅ - Lesona manaraka →',video:'🎬 VIDEO - JEREO ALOHA',piano:'🎹 PIANO ROLL - TSINDIO NY NOTE - HENOY',beatmaker:'🥁 BEATMAKER - TSINDIO - MAMORONA BEAT ANAO'},
+fr:{title:'BOY PROF OFFLINE',sub:'FL STUDIO COMPLET - Rap Gasy / Piano Roll / Vidéo',search:'Pose ta question... ex: 808, rap gasy, piano roll...',back:'← Retour',understood:"J'ai compris ✅ - Leçon suivante →",video:'🎬 VIDEO - REGARDE D\'ABORD',piano:'🎹 PIANO ROLL - CLIQUE UNE NOTE - ÉCOUTE',beatmaker:'🥁 BEATMAKER - CLIQUE - CRÉE TON BEAT'},
+en:{title:'BOY PROF OFFLINE',sub:'FL STUDIO COMPLET - Rap Gasy / Piano Roll / Video',search:'Ask... ex: 808, rap gasy, piano roll...',back:'← Back',understood:'Got it ✅ - Next lesson →',video:'🎬 VIDEO - WATCH FIRST',piano:'🎹 PIANO ROLL - TAP A NOTE - LISTEN',beatmaker:'🥁 BEATMAKER - TAP - MAKE YOUR BEAT'}
 };
 const lessons = [
-{id:1,title:{mg:'1. Inona ny FL Studio?',fr:'1. Cest quoi FL Studio?',en:'1. What is FL Studio?'},steps:{
-mg:['FL Studio = logiciel anaovana mozika / beat.','Sokafy - mahita Playlist, Channel Rack, Mixer ianao.','Atombohy @ projet vaovao foana.'],
-fr:['FL Studio = logiciel pour faire de la musique / beat.','Ouvre-le - tu vois Playlist, Channel Rack, Mixer.','Commence toujours par un nouveau projet.'],
-en:['FL Studio = software to make music / beat.','Open it - you see Playlist, Channel Rack, Mixer.','Always start with a new project.']}},
-{id:2,title:{mg:'2. Manao Beat / Drum',fr:'2. Créer un Beat / Drum',en:'2. Make a Beat / Drum'},steps:{
-mg:['Mandehana @ Channel Rack.','Tsindrio Kick - apetraho @ 1, 5, 9, 13.','Ampio Clap @ 5 sy 13.','Ampio Hi-Hat @ isaky ny 2.','Tsindrio Play - henoy!'],
-fr:['Va dans Channel Rack.','Clique Kick - mets-le sur 1, 5, 9, 13.','Ajoute Clap sur 5 et 13.','Ajoute Hi-Hat tous les 2 temps.','Appuie Play - écoute!'],
-en:['Go to Channel Rack.','Click Kick - put it on 1, 5, 9, 13.','Add Clap on 5 and 13.','Add Hi-Hat every 2 steps.','Press Play - listen!']}},
-{id:3,title:{mg:'3. Mametraka Melody',fr:'3. Ajouter une Mélodie',en:'3. Add a Melody'},steps:{
-mg:['Tsindrio havanana @ instrument - Piano Roll.','Safidio note - ohatra C, E, G.','Apetraho tsikelikely - aza maika.','Henoy - ovay raha tsy mety.'],
-fr:['Clic droit sur instrument - Piano Roll.','Choisis des notes - ex: C, E, G.','Place-les doucement - ne te presse pas.','Écoute - change si ça ne va pas.'],
-en:['Right-click instrument - Piano Roll.','Choose notes - ex: C, E, G.','Place them slowly - dont rush.','Listen - change if not good.']}},
-{id:4,title:{mg:'4. Exporter @ MP3',fr:'4. Exporter en MP3',en:'4. Export to MP3'},steps:{
-mg:['Tsindrio File > Export > MP3.','Safidio qualité - 320kbps.','Safidio toerana hitahirizana.','Tsindrio Start - vita!'],
-fr:['Clique File > Export > MP3.','Choisis qualité - 320kbps.','Choisis où enregistrer.','Clique Start - fini!'],
-en:['Click File > Export > MP3.','Choose quality - 320kbps.','Choose where to save.','Click Start - done!']}}
+{id:1,cat:'DEBUT • LAVA',title:{mg:'1. FL Studio COMPLET - Atombohy @ ZERO (Lava)',fr:'1. FL Studio COMPLET - Commence à ZÉRO (Long)',en:'1. FL Studio COMPLETE - Start from ZERO (Long)'},steps:{
+mg:['FL Studio = Studio anaty PC. Beat, hira, Rap Gasy, Afro, Trap - rehetra ao.','Tsy mila: Piano tena izy, micro lafo, PC matanjaka. Mila: PC + Casque + Faharetana 7 andro.','Ny 4 lehibe: Channel Rack (F6) = feo, Piano Roll (F7) = melody, Playlist (F5) = fandaminana, Mixer (F9) = fanadiovana.','TEMPLATE PRO: Mamorona projet vaovao, apetraho BPM 120, tehirizo hoe "TEMPLATE-BOY". Isaky ny manomboka - sokafy io - tsy manomboka @ zero intsony.','FANAZARAN-TENA ANDRO 1: Sokafy FL Studio 10 min, tsindrio F6/F7/F5/F9 in-10. Aza manao beat. Fantaro fotsiny ny toerana.','FAHADISOANA: Mijery video 5 ora - tsy manao na inona na inona. Mijery 10 min - manao 50 min.'],
+fr:['FL Studio = Studio dans PC. Beat, chanson, Rap Gasy, Afro, Trap - tout dedans.','Pas besoin: vrai piano, micro cher, PC puissant. Besoin: PC + Casque + Patience 7 jours.','Les 4 grands: Channel Rack (F6) = sons, Piano Roll (F7) = mélodie, Playlist (F5) = arrangement, Mixer (F9) = nettoyage.','TEMPLATE PRO: Crée nouveau projet, mets BPM 120, sauvegarde "TEMPLATE-BOY". Chaque fois - ouvre-le - tu ne recommences plus à zéro.','EXERCICE JOUR 1: Ouvre FL Studio 10 min, appuie F6/F7/F5/F9 10 fois. Ne fais pas de beat. Connais juste les endroits.','ERREUR: Regarder vidéo 5h - ne rien faire. Regarde 10 min - fais 50 min.'],
+en:['FL Studio = Studio in PC. Beat, song, Rap Gasy, Afro, Trap - all inside.','No need: real piano, expensive mic, strong PC. Need: PC + Headphone + Patience 7 days.','The big 4: Channel Rack (F6) = sounds, Piano Roll (F7) = melody, Playlist (F5) = arrangement, Mixer (F9) = cleaning.','PRO TEMPLATE: Create new project, set BPM 120, save "TEMPLATE-BOY". Every time - open it - you never start from zero again.','DAY 1 EXERCISE: Open FL Studio 10 min, press F6/F7/F5/F9 10 times. Don\'t make beat. Just know places.','MISTAKE: Watch video 5h - do nothing. Watch 10 min - do 50 min.']}},
+{id:2,cat:'BEAT • LAVA',title:{mg:'2. Beat - Drum, 808, Hi-Hat - Formula PRO',fr:'2. Beat - Drum, 808, Hi-Hat - Formule PRO',en:'2. Beat - Drum, 808, Hi-Hat - PRO Formula'},steps:{
+mg:['BPM: Rap Gasy = 90-95, Trap = 130-140, Afro / Amapiano = 110-115, Drill = 140-145.','KICK @ 1,5,9,13. CLAP @ 5,13. HI-HAT @ isaky ny 2. OPEN HAT @ 3,11.','808: Manaraka Kick. Apetraho @ C2. Volume 70%. Fohy - aza lava.','HI-HAT PRO: Ovay ny velocity - ny sasany matanjaka, ny sasany malemy. Izany no manome GROOVE - tsy robot.','SNARE / RIM: Ampio @ 7 na 15 indray mandeha - manome surprise.','FANAZARAN-TENA: Manaova beat 3 - iray Rap Gasy (90 BPM), iray Trap (140), iray Afro (112). Aza mampiasa melody - drum fotsiny.'],
+fr:['BPM: Rap Gasy = 90-95, Trap = 130-140, Afro / Amapiano = 110-115, Drill = 140-145.','KICK sur 1,5,9,13. CLAP sur 5,13. HI-HAT tous les 2. OPEN HAT sur 3,11.','808: Suit Kick. Mets sur C2. Volume 70%. Court - pas long.','HI-HAT PRO: Change la velocity - certains forts, certains faibles. Ça donne GROOVE - pas robot.','SNARE / RIM: Ajoute sur 7 ou 15 une fois - donne surprise.','EXERCICE: Fais 3 beats - un Rap Gasy (90 BPM), un Trap (140), un Afro (112). Pas de mélodie - drum seulement.'],
+en:['BPM: Rap Gasy = 90-95, Trap = 130-140, Afro / Amapiano = 110-115, Drill = 140-145.','KICK on 1,5,9,13. CLAP on 5,13. HI-HAT every 2. OPEN HAT on 3,11.','808: Follows Kick. Put on C2. Volume 70%. Short - not long.','HI-HAT PRO: Change velocity - some strong, some weak. That gives GROOVE - not robot.','SNARE / RIM: Add on 7 or 15 once - gives surprise.','EXERCISE: Make 3 beats - one Rap Gasy (90 BPM), one Trap (140), one Afro (112). No melody - drum only.']}},
+{id:3,cat:'PIANO ROLL • SARY',title:{mg:'3. Piano Roll - Sary + Feo - Tsindrio @ ambany!',fr:'3. Piano Roll - Image + Son - Clique en bas!',en:'3. Piano Roll - Image + Sound - Tap below!'},steps:{
+mg:['PIANO ROLL = Taratasy mozika. Ny avo = avo ny feo. Ny ambany = ambany ny feo. Ny lava = lava ny feo.','C MAJOR (Faly): C - E - G. A MINOR (Malahelo / Rap Gasy): A - C - E.','Melody Rap Gasy matsiro: A (lava), C (fohy), E (fohy), A ambany (lava). Avereno.','MELODY TRAP: C (fohy), C (fohy), D# (lava), G (fohy). Mampiasa note mainty (D#) = manome fihetseham-po maizina.','SECRET: Aza mampiasa note 10. Note 3-4 miverimberina = tadidin\'ny olona.','Eto ambany - misy PIANO tena mandeha - tsindrio - henoy - dia avereno @ FL Studio!'],
+fr:['PIANO ROLL = Papier musique. Haut = son aigu. Bas = son grave. Long = son long.','C MAJEUR (Joyeux): C - E - G. A MINEUR (Triste / Rap Gasy): A - C - E.','Mélodie Rap Gasy bonne: A (long), C (court), E (court), A bas (long). Répète.','MÉLODIE TRAP: C (court), C (court), D# (long), G (court). Utilise note noire (D#) = donne émotion sombre.','SECRET: N\'utilise pas 10 notes. 3-4 notes qui se répètent = les gens retiennent.','En bas - il y a un vrai PIANO qui marche - clique - écoute - puis refais dans FL Studio!'],
+en:['PIANO ROLL = Music paper. High = high sound. Low = low sound. Long = long sound.','C MAJOR (Happy): C - E - G. A MINOR (Sad / Rap Gasy): A - C - E.','Good Rap Gasy melody: A (long), C (short), E (short), low A (long). Repeat.','TRAP MELODY: C (short), C (short), D# (long), G (short). Use black note (D#) = gives dark emotion.','SECRET: Don\'t use 10 notes. 3-4 repeating notes = people remember.','Below - there is a real PIANO that works - tap - listen - then redo in FL Studio!']}},
+{id:4,cat:'RAP GASY',title:{mg:'4. RAP GASY - Beat, Flow, Teny - COMPLET',fr:'4. RAP GASY - Beat, Flow, Paroles - COMPLET',en:'4. RAP GASY - Beat, Flow, Lyrics - COMPLETE'},steps:{
+mg:['RAP GASY = BPM 90-95. Tsy haingana - mila TENY mazava. Ny olona mihaino TENY - tsy beat fotsiny.','BEAT RAP GASY: Kick tsotra, 808 malefaka, Melody piano na gitara. Aza atao be ny effet.','FLOW: Miteny @ gadona. Andramo: Miteny 4 fehezanteny @ 1 bar - dia miala aina @ bar manaraka. Aza miteny tsy mijanona.','TENY: Soraty @ tenin\'ny andavanandro - toy ny miteny @ namana. Aza mampiasa teny sarotra - tsy takatry ny olona.','RAFITRA HIRA RAP GASY: Intro 4 bar (melody fotsiny) > Couplet 16 bar > Refrain 8 bar (miverimberina) > Couplet 16 bar > Refrain 8 bar > Outro.','HOOK / REFRAIN: Fehezanteny 1 fohy - miverimberina - tadidin\'ny olona. Ohatra: "Tsy mijanona aho, mbola miady aho".','FANAZARAN-TENA: Soraty Couplet 8 bar anio - @ fiainanao andavanandro - sekoly, tanàna, fianakaviana. Izay no tena Rap Gasy.'],
+fr:['RAP GASY = BPM 90-95. Pas rapide - il faut des PAROLES claires. Les gens écoutent les PAROLES - pas que le beat.','BEAT RAP GASY: Kick simple, 808 doux, Mélodie piano ou guitare. Ne mets pas trop d\'effets.','FLOW: Parle sur le rythme. Essaie: Dis 4 phrases sur 1 bar - puis respire sur le bar suivant. Ne parle pas sans arrêt.','PAROLES: Écris comme tu parles au quotidien - comme tu parles à un ami. N\'utilise pas de mots compliqués - les gens ne comprennent pas.','STRUCTURE CHANSON RAP GASY: Intro 4 bar (mélodie seule) > Couplet 16 bar > Refrain 8 bar (qui se répète) > Couplet 16 bar > Refrain 8 bar > Outro.','HOOK / REFRAIN: 1 phrase courte - qui se répète - les gens retiennent. Ex: "Je ne m\'arrête pas, je me bats encore".','EXERCICE: Écris un Couplet de 8 bars aujourd\'hui - sur ta vie quotidienne - école, quartier, famille. C\'est ça le vrai Rap Gasy.'],
+en:['RAP GASY = BPM 90-95. Not fast - need CLEAR words. People listen to WORDS - not just beat.','RAP GASY BEAT: Simple Kick, soft 808, Piano or guitar melody. Don\'t put many effects.','FLOW: Speak on rhythm. Try: Say 4 sentences on 1 bar - then breathe on next bar. Don\'t speak non-stop.','LYRICS: Write like daily talk - like talking to friend. Don\'t use hard words - people don\'t understand.','RAP GASY SONG STRUCTURE: Intro 4 bar (melody only) > Verse 16 bar > Chorus 8 bar (repeating) > Verse 16 bar > Chorus 8 bar > Outro.','HOOK / CHORUS: 1 short sentence - repeating - people remember. Ex: "I don\'t stop, I still fight".','EXERCISE: Write 8 bar Verse today - about your daily life - school, neighborhood, family. That is real Rap Gasy.']}},
+{id:5,cat:'MIXER + EFFET',title:{mg:'5. Mixer + Effet - Reverb, Delay, EQ, Autotune',fr:'5. Mixer + Effets - Reverb, Delay, EQ, Autotune',en:'5. Mixer + Effects - Reverb, Delay, EQ, Autotune'},steps:{
+mg:['MIXER (F9): Ny feo tsirairay manana numero. Kick=1, Clap=2, Melody=3, Voix=4.','EQ: Esory ny ambany @ Melody sy Voix - avelao Bass ihany no ambany. Raha tsy izany - korontana.','REVERB: 15-20% fotsiny. Toy ny mihira @ eglizy. Raha be - lavitra ny feo.','DELAY: @ faran\'ny fehezanteny - "aho... aho... aho" - matsiro.','COMPRESSOR @ Voix: Mampitovy ny feo - ny malemy miakatra, ny matanjaka midina.','AUTOTUNE: Tsy ody. Mila mihira @ note marina 80%. Apetraho @ Key marina - ohatra A Minor - raha diso Key - lasa hafahafa.','HENoy @ 3 toerana: Casque, Baffle, Phone. Raha matsiro @ 3 - VONONA.'],
+fr:['MIXER (F9): Chaque son a un numéro. Kick=1, Clap=2, Mélodie=3, Voix=4.','EQ: Enlève les basses sur Mélodie et Voix - laisse seulement Bass être basse. Sinon - bordel.','REVERB: 15-20% seulement. Comme chanter dans église. Si trop - voix loin.','DELAY: À la fin d\'une phrase - "moi... moi... moi" - bon.','COMPRESSEUR sur Voix: Égalise la voix - faible monte, fort descend.','AUTOTUNE: Pas magie. Il faut chanter 80% juste. Mets sur la bonne Key - ex: A Mineur - si mauvaise Key - bizarre.','ÉCOUTE sur 3 endroits: Casque, Enceinte, Phone. Si bon sur 3 - PRÊT.'],
+en:['MIXER (F9): Each sound has number. Kick=1, Clap=2, Melody=3, Voice=4.','EQ: Remove lows on Melody and Voice - let only Bass be low. Otherwise - mess.','REVERB: 15-20% only. Like singing in church. If too much - voice far.','DELAY: At end of sentence - "me... me... me" - tasty.','COMPRESSOR on Voice: Equalizes voice - weak goes up, strong goes down.','AUTOTUNE: Not magic. Need sing 80% correct. Set on correct Key - ex: A Minor - if wrong Key - weird.','LISTEN on 3 places: Headphone, Speaker, Phone. If good on 3 - READY.']}},
+{id:6,cat:'PLAYLIST + EXPORT',title:{mg:'6. Playlist + Export MP3 - Vonona halefa @ TikTok',fr:'6. Playlist + Export MP3 - Prêt pour TikTok',en:'6. Playlist + Export MP3 - Ready for TikTok'},steps:{
+mg:['PLAYLIST: Intro 8s (melody fotsiny) > Couplet > Refrain (REHETRA) > Couplet > Refrain > Outro (esorina tsikelikely).','FIOVANA: Isaky ny 8 bar - esory na ampio feo 1. Raha mitovy 3 min - leo ny olona.','EXPORT: File > Export > MP3 > 320kbps > Stereo > Best Quality.','ANARANA: "Anaranao - Lohateny - 2026". Aza atao "New Project 1".','TIKTOK: Ampiasao 15s tsara indrindra - Refrain. Asio sary mihetsika + soratra.','CHALLENGE 7 ANDRO: Andro 1: Beat, Andro 2: Melody, Andro 3: Rap Gasy, Andro 4: Mixer, Andro 5: Hira feno, Andro 6: Export, Andro 7: Alefaso!'],
+fr:['PLAYLIST: Intro 8s (mélodie seule) > Couplet > Refrain (TOUT) > Couplet > Refrain > Outro (enlève petit à petit).','CHANGEMENT: Tous les 8 bars - enlève ou ajoute 1 son. Si pareil 3 min - les gens s\'ennuient.','EXPORT: File > Export > MP3 > 320kbps > Stereo > Best Quality.','NOM: "Ton Nom - Titre - 2026". Ne mets pas "New Project 1".','TIKTOK: Utilise les 15s meilleures - Refrain. Mets vidéo + texte.','CHALLENGE 7 JOURS: Jour 1: Beat, Jour 2: Mélodie, Jour 3: Rap Gasy, Jour 4: Mixer, Jour 5: Chanson complète, Jour 6: Export, Jour 7: Poste!'],
+en:['PLAYLIST: Intro 8s (melody only) > Verse > Chorus (ALL) > Verse > Chorus > Outro (remove slowly).','CHANGE: Every 8 bars - remove or add 1 sound. If same 3 min - people bored.','EXPORT: File > Export > MP3 > 320kbps > Stereo > Best Quality.','NAME: "Your Name - Title - 2026". Don\'t put "New Project 1".','TIKTOK: Use best 15s - Chorus. Put moving image + text.','CHALLENGE 7 DAYS: Day 1: Beat, Day 2: Melody, Day 3: Rap Gasy, Day 4: Mixer, Day 5: Full song, Day 6: Export, Day 7: Post!']}}
 ];
+function playNote(freq){
+try{
+let ctx=new (window.AudioContext||window.webkitAudioContext)();
+let o=ctx.createOscillator(); let g=ctx.createGain();
+o.type='triangle'; o.frequency.value=freq; g.gain.value=0.3;
+o.connect(g); g.connect(ctx.destination); o.start(); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+1); o.stop(ctx.currentTime+1);
+}catch(e){}
+}
+function toggleCell(el){ el.classList.toggle('on'); if(el.classList.contains('on')) playNote(150); }
 function render(){
 const t=T[lang];
 let html=`<h1>${t.title}</h1><p>${t.sub}</p><div class="lang">
@@ -53,11 +83,20 @@ let html=`<h1>${t.title}</h1><p>${t.sub}</p><div class="lang">
 <button class="${lang==='en'?'active':''}" onclick="setLang('en')">🇬🇧 English</button></div>`;
 if(!current){
 html+=`<input placeholder="${t.search}" oninput="query=this.value;render()" value="${query}">`;
+html+=`<div class="video"><b>${t.video}</b><br><br>🎬 <a href="https://www.youtube.com/results?search_query=FL+Studio+beginner+tutorial" target="_blank">FL Studio Beginner - YouTube</a><br>🎬 <a href="https://www.youtube.com/results?search_query=FL+Studio+Rap+Gasy+beat" target="_blank">Rap Gasy Beat - YouTube</a><br>🎬 <a href="https://www.youtube.com/results?search_query=FL+Studio+Piano+Roll+melody" target="_blank">Piano Roll Melody - YouTube</a></div>`;
+html+=`<div><b>${t.piano}</b><div class="piano">
+<div class="key" onclick="playNote(261)">C</div><div class="key black" onclick="playNote(277)">C#</div><div class="key" onclick="playNote(293)">D</div><div class="key black" onclick="playNote(311)">D#</div><div class="key" onclick="playNote(329)">E</div><div class="key" onclick="playNote(349)">F</div><div class="key black" onclick="playNote(369)">F#</div><div class="key" onclick="playNote(392)">G</div><div class="key black" onclick="playNote(415)">G#</div><div class="key" onclick="playNote(440)">A</div><div class="key black" onclick="playNote(466)">A#</div><div class="key" onclick="playNote(493)">B</div><div class="key" onclick="playNote(523)">C2</div></div><p class="note">Andramo: C - E - G = Faly | A - C - E = Rap Gasy / Malahelo</p></div>`;
+html+=`<div><b>${t.beatmaker}</b><p class="note">KICK = mena | CLAP = mavo | HI-HAT = maitso - Tsindrio ny boaty</p><div class="grid">`;
+let rows=[{n:'KICK',c:'kick'},{n:'CLAP',c:'clap'},{n:'HI-HAT',c:'hat'}];
+rows.forEach(r=>{html+=`<span class="note">${r.n}</span>`; for(let i=0;i<16;i++){let on=(r.n==='KICK'&&[0,4,8,12].includes(i))||(r.n==='CLAP'&&[4,12].includes(i))||(r.n==='HI-HAT'&&i%2===0)?' on':''; html+=`<div class="cell ${r.c}${on}" onclick="toggleCell(this)"></div>`;} });
+html+=`</div></div>`;
+html+=`<div class="challenge"><b>🔥 CHALLENGE 7 ANDRO - BOY PROF</b><br>Andro 1: Beat • Andro 2: Melody • Andro 3: Rap Gasy • Andro 4: Mixer • Andro 5: Hira Feno • Andro 6: Export • Andro 7: Alefaso @ TikTok #BoyProf</div>`;
 let list=lessons.filter(l=>l.title[lang].toLowerCase().includes(query.toLowerCase())||l.steps[lang].join(' ').toLowerCase().includes(query.toLowerCase()));
-list.forEach(l=>{html+=`<div class="card" onclick="openLesson(${l.id})"><h3>${l.title[lang]}</h3><p>${l.steps[lang][0]}</p></div>`});
+list.forEach(l=>{html+=`<div class="card" onclick="openLesson(${l.id})"><span class="badge">${l.cat}</span><h3 style="margin-top:8px">${l.title[lang]}</h3><p>${l.steps[lang][0]}</p></div>`});
 }else{
 let l=lessons.find(x=>x.id===current);
 html+=`<button class="back" onclick="current=null;render()">${t.back}</button><h2>${l.title[lang]}</h2>`;
+if(l.id===3){html+=`<div><b>${t.piano}</b><div class="piano"><div class="key" onclick="playNote(261)">C</div><div class="key" onclick="playNote(293)">D</div><div class="key" onclick="playNote(329)">E</div><div class="key" onclick="playNote(349)">F</div><div class="key" onclick="playNote(392)">G</div><div class="key" onclick="playNote(440)">A</div><div class="key" onclick="playNote(493)">B</div></div></div>`;}
 l.steps[lang].forEach((s,i)=>{html+=`<div class="step"><b>Étape ${i+1}:</b> ${s}</div>`});
 html+=`<button style="background:#ff6a00;color:#fff;width:100%;margin-top:12px" onclick="current=null;render()">${t.understood}</button>`;
 }
