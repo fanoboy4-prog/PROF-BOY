@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BOY PROF OFFLINE - FL STUDIO SARY</title>
+<title>BOY PROF - FL STUDIO SUR PC - 3 LANGUES</title>
 <style>
 body{font-family:sans-serif;background:#111;color:#fff;margin:0;padding:14px}
+.pc{background:#ff0000;color:#fff;padding:14px;border-radius:14px;text-align:center;font-weight:bold;font-size:16px;margin:10px 0}
 button{padding:12px 16px;border-radius:12px;border:none;font-weight:bold;cursor:pointer}
 .lang button{background:#222;color:#fff;margin:4px}
-.lang button.active{background:#ff6a00}
+.lang button.active{background:#ff6a00;transform:scale(1.1)}
 input{width:100%;padding:14px;border-radius:12px;border:none;margin:14px 0;font-size:16px}
 .card{background:#1e1e1e;padding:16px;border-radius:16px;margin:10px 0;cursor:pointer}
 .card h3{margin:0 0 6px;color:#ff6a00}
 .step{background:#2a2a2a;padding:14px;border-radius:12px;margin:8px 0;line-height:1.6}
 .back{background:#333;color:#fff;margin-bottom:12px}
 .badge{background:#ff6a00;color:#fff;padding:4px 8px;border-radius:20px;font-size:12px}
-/* --- SARY FL STUDIO --- */
 .fl{border:3px solid #ff6a00;border-radius:16px;overflow:hidden;background:#1a1a1a;margin:12px 0}
 .fl-top{background:#2b2b2b;padding:10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .fl-top span{background:#444;padding:8px 10px;border-radius:8px;font-size:12px;font-weight:bold}
@@ -23,10 +23,9 @@ input{width:100%;padding:14px;border-radius:12px;border:none;margin:14px 0;font-
 .fl-top .bpm{background:#ff6a00}
 .fl-top .vol{background:#2196f3}
 .fl-body{display:grid;grid-template-columns:90px 1fr 90px;gap:6px;padding:8px}
-.fl-box{background:#222;border:2px solid #444;border-radius:12px;padding:10px;min-height:90px;position:relative}
+.fl-box{background:#222;border:2px solid #444;border-radius:12px;padding:10px;min-height:90px}
 .fl-box b{color:#ff6a00;font-size:13px}
 .fl-box p{font-size:11px;color:#ccc;margin:6px 0 0;line-height:1.4}
-.fl-box.active{border-color:#ff6a00;background:#2a1a00}
 .arrow{color:#ff6a00;font-weight:bold;font-size:13px;margin:6px 0;display:block}
 .legend{background:#1e1e1e;border-radius:14px;padding:12px;margin:12px 0}
 .legend div{padding:8px 0;border-bottom:1px solid #333;font-size:14px;line-height:1.5}
@@ -37,11 +36,11 @@ input{width:100%;padding:14px;border-radius:12px;border:none;margin:14px 0;font-
 .key:active{background:#ff6a00;color:#fff}
 .grid{display:grid;grid-template-columns:40px repeat(16,1fr);gap:2px;margin:12px 0;overflow-x:auto}
 .cell{background:#222;height:28px;border-radius:4px;cursor:pointer}
-.cell.on{background:#ff6a00}.cell.kick{background:#ff3b30}.cell.clap{background:#ffcc00}.cell.hat{background:#00c853}
-.note{font-size:12px;color:#aaa}
-.challenge{background:linear-gradient(90deg,#ff6a00,#ff0055);padding:16px;border-radius:16px;margin:12px 0}
+.cell.on{background:#ff6a00}
 .mini{border:2px solid #444;border-radius:14px;padding:12px;margin:10px 0;background:#1a1a1a}
 .mini b{color:#ff6a00}
+.kbd{background:#000;color:#ff6a00;padding:3px 7px;border-radius:6px;border:1px solid #555;font-weight:bold}
+.challenge{background:linear-gradient(90deg,#ff6a00,#ff0055);padding:16px;border-radius:16px;margin:12px 0}
 </style>
 </head>
 <body>
@@ -51,101 +50,69 @@ let lang = localStorage.getItem('lang') || 'mg';
 let current = null;
 let query = '';
 const T = {
-mg:{title:'BOY PROF OFFLINE',sub:'FL STUDIO - SARY TOROLALANA - Flèche manondro isaky ny Cage',search:'Anontanio... ex: volume, mixer, piano roll, playlist...',back:'← Miverina',understood:'Azoko ✅ - Lesona manaraka →',guide:'🖼️ SARY TOROLALANA - FL STUDIO - ÉCRAN D\'ACCUEIL VOALOHANY',tap:'👆 TSINDIO NY CAGE - HAHITANAO NY ASANY',piano:'🎹 PIANO ROLL - TSINDIO NY NOTE',beatmaker:'🥁 BEATMAKER - TSINDIO NY BOATY'},
-fr:{title:'BOY PROF OFFLINE',sub:'FL STUDIO - GUIDE EN IMAGES - Flèche sur chaque Case',search:'Pose ta question... ex: volume, mixer, piano roll...',back:'← Retour',understood:"J'ai compris ✅ - Leçon suivante →",guide:"🖼️ GUIDE EN IMAGES - FL STUDIO - PREMIER ÉCRAN",tap:'👆 CLIQUE UNE CASE - TU VERRAS SON RÔLE',piano:'🎹 PIANO ROLL - CLIQUE UNE NOTE',beatmaker:'🥁 BEATMAKER - CLIQUE LES CASES'},
-en:{title:'BOY PROF OFFLINE',sub:'FL STUDIO - PICTURE GUIDE - Arrow on every Box',search:'Ask... ex: volume, mixer, piano roll...',back:'← Back',understood:'Got it ✅ - Next lesson →',guide:'🖼️ PICTURE GUIDE - FL STUDIO - FIRST SCREEN',tap:'👆 TAP A BOX - SEE WHAT IT DOES',piano:'🎹 PIANO ROLL - TAP A NOTE',beatmaker:'🥁 BEATMAKER - TAP THE BOXES'}
+mg:{
+title:'BOY PROF OFFLINE',sub:'FL STUDIO SUR PC - 3 Langues - Gasy / Français / English',search:'Anontanio... ex: volume, mixer, piano roll...',back:'← Miverina',understood:'Azoko ✅ - Lesona manaraka →',
+guide:'🖥️ FL STUDIO SUR PC - SARY INTERFACE PC',tap:'👆 Tsindrio ny bokotra langue eo ambony - hiova daholo ny soratra!',
+piano:'🎹 PIANO ROLL - TSINDIO NY NOTE',beatmaker:'🥁 BEATMAKER',
+pcbar:'🖥️ FL STUDIO SUR PC - TSY PHONE - Ity app ity = TOROLALANA @ Phone - Ny FL Studio tena izy = @ PC',
+bpmLabel:'Hafaingan\'ny hira @ PC',volLabel:'Hery ny feo @ PC',
+browser:'BROWSER @ PC',browserDesc:'Trano fitahirizana feo @ PC',browserArrow:'⬅️ Flèche manondro BROWSER @ PC = Double-clic @ souris',
+rack:'CHANNEL RACK @ PC',rackArrow:'⬆️ Flèche manondro CHANNEL RACK @ PC = Clic @ souris',
+mixer:'MIXER @ PC',mixerArrow:'➡️ Flèche manondro MIXER @ PC = Tariho volume @ souris',
+pianoRoll:'PIANO ROLL @ PC',pianoArrow:'🎹 Flèche manondro PIANO ROLL @ PC = Eo anaovana melody @ souris',
+playlist:'PLAYLIST @ PC',playlistArrow:'⬇️ Flèche manondro PLAYLIST @ PC = Eo andaminana hira @ souris',
+white:'Note fotsy',black:'Note mainty',up:'Miakatra = feo avo',down:'Midina = feo ambany',
+intro:'INTRO - 8s - melody fotsiny',couplet:'COUPLET - Kick + Bass',refrain:'REFRAIN - REHETRA',outro:'OUTRO - esorina tsikelikely',
+happy:'C-E-G = Faly',sad:'A-C-E = Rap Gasy',
+leg1:'🖥️ PC IHANY - TSY PHONE - FL Studio = Logiciel PC. Ity app ity = Torolalana @ Phone fotsiny.',
+leg2:'▶ PLAY ➡️ - @ PC - Tsindrio ESPACE @ clavier PC',leg3:'🔊 VOLUME ➡️ - @ PC - Flèche manondro VOLUME = Tariho @ souris PC - 80% = tsara',
+leg4:'🎵 BPM ➡️ - @ PC - Flèche manondro BPM = Soraty @ clavier PC - 90 = Rap Gasy',
+leg5:'📁 BROWSER ➡️ - @ PC - Double-clic @ souris',leg6:'🥁 CHANNEL RACK ➡️ - @ PC - Clic @ souris - F6',
+leg7:'🎹 PIANO ROLL ➡️ - @ PC - Clic droit @ souris - F7',leg8:'⬇️ PLAYLIST ➡️ - @ PC - Tariho @ souris - F5',leg9:'🎚️ MIXER ➡️ - @ PC - Tariho volume @ souris - F9'
+},
+fr:{
+title:'BOY PROF OFFLINE',sub:'FL STUDIO SUR PC - 3 Langues - Gasy / Français / English',search:'Pose ta question... ex: volume, mixer, piano roll...',back:'← Retour',understood:"J'ai compris ✅ - Leçon suivante →",
+guide:'🖥️ FL STUDIO SUR PC - IMAGE INTERFACE PC',tap:'👆 Clique sur le bouton langue en haut - tout le texte va changer !',
+piano:'🎹 PIANO ROLL - CLIQUE UNE NOTE',beatmaker:'🥁 BEATMAKER',
+pcbar:'🖥️ FL STUDIO SUR PC - PAS PHONE - Cette app = GUIDE sur Phone - Le vrai FL Studio = sur PC',
+bpmLabel:'Vitesse de la chanson sur PC',volLabel:'Force du son sur PC',
+browser:'BROWSER SUR PC',browserDesc:'Maison où on stocke les sons sur PC',browserArrow:'⬅️ Flèche pointe BROWSER SUR PC = Double-clic à la souris',
+rack:'CHANNEL RACK SUR PC',rackArrow:'⬆️ Flèche pointe CHANNEL RACK SUR PC = Clic à la souris',
+mixer:'MIXER SUR PC',mixerArrow:'➡️ Flèche pointe MIXER SUR PC = Glisse volume à la souris',
+pianoRoll:'PIANO ROLL SUR PC',pianoArrow:'🎹 Flèche pointe PIANO ROLL SUR PC = Là on fait la mélodie à la souris',
+playlist:'PLAYLIST SUR PC',playlistArrow:'⬇️ Flèche pointe PLAYLIST SUR PC = Là on arrange la chanson à la souris',
+white:'Note blanche',black:'Note noire',up:'Monte = son aigu',down:'Descend = son grave',
+intro:'INTRO - 8s - mélodie seule',couplet:'COUPLET - Kick + Bass',refrain:'REFRAIN - TOUT',outro:'OUTRO - enlève petit à petit',
+happy:'C-E-G = Joyeux',sad:'A-C-E = Rap Gasy',
+leg1:'🖥️ PC SEULEMENT - PAS PHONE - FL Studio = Logiciel PC. Cette app = Guide sur Phone seulement.',
+leg2:'▶ PLAY ➡️ - Sur PC - Appuie ESPACE sur clavier PC',leg3:'🔊 VOLUME ➡️ - Sur PC - Flèche pointe VOLUME = Glisse à la souris PC - 80% = bon',
+leg4:'🎵 BPM ➡️ - Sur PC - Flèche pointe BPM = Tape sur clavier PC - 90 = Rap Gasy',
+leg5:'📁 BROWSER ➡️ - Sur PC - Double-clic à la souris',leg6:'🥁 CHANNEL RACK ➡️ - Sur PC - Clic à la souris - F6',
+leg7:'🎹 PIANO ROLL ➡️ - Sur PC - Clic droit à la souris - F7',leg8:'⬇️ PLAYLIST ➡️ - Sur PC - Glisse à la souris - F5',leg9:'🎚️ MIXER ➡️ - Sur PC - Glisse volume à la souris - F9'
+},
+en:{
+title:'BOY PROF OFFLINE',sub:'FL STUDIO ON PC - 3 Languages - Gasy / Français / English',search:'Ask... ex: volume, mixer, piano roll...',back:'← Back',understood:'Got it ✅ - Next lesson →',
+guide:'🖥️ FL STUDIO ON PC - PC INTERFACE IMAGE',tap:'👆 Tap language button on top - all text will change!',
+piano:'🎹 PIANO ROLL - TAP A NOTE',beatmaker:'🥁 BEATMAKER',
+pcbar:'🖥️ FL STUDIO ON PC - NOT PHONE - This app = GUIDE on Phone - Real FL Studio = on PC',
+bpmLabel:'Speed of song on PC',volLabel:'Power of sound on PC',
+browser:'BROWSER ON PC',browserDesc:'House where sounds are stored on PC',browserArrow:'⬅️ Arrow points BROWSER ON PC = Double-click with mouse',
+rack:'CHANNEL RACK ON PC',rackArrow:'⬆️ Arrow points CHANNEL RACK ON PC = Click with mouse',
+mixer:'MIXER ON PC',mixerArrow:'➡️ Arrow points MIXER ON PC = Drag volume with mouse',
+pianoRoll:'PIANO ROLL ON PC',pianoArrow:'🎹 Arrow points PIANO ROLL ON PC = There you make melody with mouse',
+playlist:'PLAYLIST ON PC',playlistArrow:'⬇️ Arrow points PLAYLIST ON PC = There you arrange song with mouse',
+white:'White note',black:'Black note',up:'Up = high sound',down:'Down = low sound',
+intro:'INTRO - 8s - melody only',couplet:'VERSE - Kick + Bass',refrain:'CHORUS - ALL',outro:'OUTRO - remove slowly',
+happy:'C-E-G = Happy',sad:'A-C-E = Rap Gasy',
+leg1:'🖥️ PC ONLY - NOT PHONE - FL Studio = PC Software. This app = Guide on Phone only.',
+leg2:'▶ PLAY ➡️ - On PC - Press SPACE on PC keyboard',leg3:'🔊 VOLUME ➡️ - On PC - Arrow points VOLUME = Drag with PC mouse - 80% = good',
+leg4:'🎵 BPM ➡️ - On PC - Arrow points BPM = Type on PC keyboard - 90 = Rap Gasy',
+leg5:'📁 BROWSER ➡️ - On PC - Double-click with mouse',leg6:'🥁 CHANNEL RACK ➡️ - On PC - Click with mouse - F6',
+leg7:'🎹 PIANO ROLL ➡️ - On PC - Right-click with mouse - F7',leg8:'⬇️ PLAYLIST ➡️ - On PC - Drag with mouse - F5',leg9:'🎚️ MIXER ➡️ - On PC - Drag volume with mouse - F9'
+}
 };
 const lessons = [
-{id:1,cat:'SARY • ÉCRAN 1',title:{mg:'1. Écran d\'accueil FL Studio - Cage rehetra + Flèche',fr:'1. Écran d\'accueil FL Studio - Toutes les Cases + Flèche',en:'1. FL Studio Home Screen - All Boxes + Arrow'},steps:{
-mg:['JEREO @ AMBONY: Ny sary FL Studio feno - ny flèche tsirairay manondro cage iray - ny soratra mifanitsy @ flèche.','⬆️ AMBONY: ▶ PLAY = manomboka / mijanona ny hira. ⏹ STOP = mijanona tanteraka. 🔴 REC = mirakitra.','⬆️ BPM = Hafaingan\'ny hira. Rap Gasy = 90, Trap = 140. Tsindrio ny isa - ovay.','⬆️ VOLUME = Hery ny feo. Raha 100% = mafy. Raha 50% = malefaka. Aza atao mena.','⬅️ HAVIA: BROWSER = Trano fitahirizana feo. Eo no alaina Kick, Clap, Sample, Loop.','➡️ HAVANANA: MIXER = Toerana anadiovana feo. Isaky ny feo - manana volume sy effet-ny.','⬇️ AMBANY: PLAYLIST = Toerana andaminana ny hira - Intro, Couplet, Refrain.','ATAOVY: Sokafy FL Studio tena izy - jereo - mitovy @ sary ve? Tsindrio isaky ny cage in-1.'],
-fr:['REGARDE EN HAUT: L\'image FL Studio complète - chaque flèche pointe une case - le texte est aligné avec la flèche.','⬆️ EN HAUT: ▶ PLAY = lance / pause la chanson. ⏹ STOP = arrête totalement. 🔴 REC = enregistre.','⬆️ BPM = Vitesse de la chanson. Rap Gasy = 90, Trap = 140. Clique le chiffre - change.','⬆️ VOLUME = Force du son. Si 100% = fort. Si 50% = doux. Ne mets pas en rouge.','⬅️ GAUCHE: BROWSER = Maison où on stocke les sons. Là on prend Kick, Clap, Sample, Loop.','➡️ DROITE: MIXER = Endroit où on nettoie le son. Chaque son a son volume et ses effets.','⬇️ EN BAS: PLAYLIST = Endroit où on arrange la chanson - Intro, Couplet, Refrain.','FAIS: Ouvre le vrai FL Studio - regarde - pareil que l\'image? Clique chaque case 1 fois.'],
-en:['LOOK ON TOP: Full FL Studio image - each arrow points one box - text aligned with arrow.','⬆️ TOP: ▶ PLAY = start / pause song. ⏹ STOP = stop totally. 🔴 REC = record.','⬆️ BPM = Speed of song. Rap Gasy = 90, Trap = 140. Click number - change.','⬆️ VOLUME = Power of sound. If 100% = loud. If 50% = soft. Don\'t make red.','⬅️ LEFT: BROWSER = House where sounds are stored. There you take Kick, Clap, Sample, Loop.','➡️ RIGHT: MIXER = Where you clean sound. Each sound has its volume and effects.','⬇️ BOTTOM: PLAYLIST = Where you arrange song - Intro, Verse, Chorus.','DO: Open real FL Studio - look - same as image? Click each box 1 time.']}},
-{id:2,cat:'CHANNEL RACK',title:{mg:'2. Channel Rack - Toerana ametrahana feo',fr:'2. Channel Rack - Endroit où on met les sons',en:'2. Channel Rack - Where you put sounds'},steps:{
-mg:['CHANNEL RACK = F6. Eo no ametrahana Kick, Clap, Hi-Hat, 808, Melody.','SARY: Jereo @ sary ambony - ny boaty mena = KICK, mavo = CLAP, maitso = HI-HAT.','KICK @ 1,5,9,13 - CLAP @ 5,13 - HI-HAT @ isaky ny 2.','FLÈCHE ➡️ KICK: Ny flèche mena manondro KICK - soratra mena = "KICK = FO".','FLÈCHE ➡️ CLAP: Flèche mavo manondro CLAP - soratra mavo = "CLAP = KAPOKA".'],
-fr:['CHANNEL RACK = F6. Là on met Kick, Clap, Hi-Hat, 808, Mélodie.','IMAGE: Regarde image en haut - boite rouge = KICK, jaune = CLAP, vert = HI-HAT.','KICK sur 1,5,9,13 - CLAP sur 5,13 - HI-HAT tous les 2.','FLÈCHE ➡️ KICK: Flèche rouge pointe KICK - texte rouge = "KICK = COEUR".','FLÈCHE ➡️ CLAP: Flèche jaune pointe CLAP - texte jaune = "CLAP = CLAQUE".'],
-en:['CHANNEL RACK = F6. There you put Kick, Clap, Hi-Hat, 808, Melody.','IMAGE: Look image on top - red box = KICK, yellow = CLAP, green = HI-HAT.','KICK on 1,5,9,13 - CLAP on 5,13 - HI-HAT every 2.','ARROW ➡️ KICK: Red arrow points KICK - red text = "KICK = HEART".','ARROW ➡️ CLAP: Yellow arrow points CLAP - yellow text = "CLAP = CLAP".']}},
-{id:3,cat:'PIANO ROLL',title:{mg:'3. Piano Roll - Sary + Feo',fr:'3. Piano Roll - Image + Son',en:'3. Piano Roll - Image + Sound'},steps:{
-mg:['PIANO ROLL = F7. Sary: Boaty fotsy = note fotsy (C,D,E...), Boaty mainty = note mainty (C#,D#...).','FLÈCHE ⬆️: Miakatra ny note = miakatra ny feo. FLÈCHE ⬇️: Midina ny note = midina ny feo.','C-E-G = Faly. A-C-E = Rap Gasy / Malahelo.','Tsindrio @ ambany ny Piano - henoy - dia avereno @ FL Studio.'],
-fr:['PIANO ROLL = F7. Image: Boite blanche = note blanche (C,D,E...), Boite noire = note noire (C#,D#...).','FLÈCHE ⬆️: Monte la note = monte le son. FLÈCHE ⬇️: Descend la note = descend le son.','C-E-G = Joyeux. A-C-E = Rap Gasy / Triste.','Clique en bas le Piano - écoute - puis refais dans FL Studio.'],
-en:['PIANO ROLL = F7. Image: White box = white note (C,D,E...), Black box = black note (C#,D#...).','ARROW ⬆️: Move note up = sound goes up. ARROW ⬇️: Move note down = sound goes down.','C-E-G = Happy. A-C-E = Rap Gasy / Sad.','Tap below Piano - listen - then redo in FL Studio.']}},
-{id:4,cat:'PLAYLIST',title:{mg:'4. Playlist - Mandamina hira',fr:'4. Playlist - Arranger chanson',en:'4. Playlist - Arrange song'},steps:{
-mg:['PLAYLIST = F5. Sary: Boaty lava = feo lava. Boaty fohy = feo fohy.','FLÈCHE ➡️ INTRO: Boaty 8s voalohany - melody fotsiny.','FLÈCHE ➡️ REFRAIN: Boaty be indrindra - feo REHETRA miaraka.','Rafitra: Intro > Couplet > Refrain > Couplet > Refrain > Outro.'],
-fr:['PLAYLIST = F5. Image: Boite longue = son long. Boite courte = son court.','FLÈCHE ➡️ INTRO: 8s premières boites - mélodie seule.','FLÈCHE ➡️ REFRAIN: Plus grandes boites - TOUS les sons ensemble.','Structure: Intro > Couplet > Refrain > Couplet > Refrain > Outro.'],
-en:['PLAYLIST = F5. Image: Long box = long sound. Short box = short sound.','ARROW ➡️ INTRO: First 8s boxes - melody only.','ARROW ➡️ CHORUS: Biggest boxes - ALL sounds together.','Structure: Intro > Verse > Chorus > Verse > Chorus > Outro.']}},
-{id:5,cat:'MIXER',title:{mg:'5. Mixer - Volume isaky ny feo',fr:'5. Mixer - Volume de chaque son',en:'5. Mixer - Volume of each sound'},steps:{
-mg:['MIXER = F9. Sary: Isaky ny tsanganana = feo iray.','FLÈCHE ⬆️ VOLUME: Raha miakatra ny tsanganana = mafy ny feo. Raha midina = malefaka.','FLÈCHE ➡️ VOLUME KICK: Tsanganana 1 = Kick. Aza atao mena - mijanona @ maitso.','FLÈCHE ➡️ VOLUME VOIX: Tsanganana 4 = Voix. Ataovy ambony kely noho ny Melody - heno ny teny.','EQ: Esory ny ambany @ Melody - avelao Bass ihany no ambany.'],
-fr:['MIXER = F9. Image: Chaque colonne = un son.','FLÈCHE ⬆️ VOLUME: Si colonne monte = son fort. Si descend = son doux.','FLÈCHE ➡️ VOLUME KICK: Colonne 1 = Kick. Ne mets pas en rouge - reste en vert.','FLÈCHE ➡️ VOLUME VOIX: Colonne 4 = Voix. Mets un peu plus haut que Mélodie - on entend les paroles.','EQ: Enlève les basses sur Mélodie - laisse seulement Bass être basse.'],
-en:['MIXER = F9. Image: Each column = one sound.','ARROW ⬆️ VOLUME: If column goes up = loud sound. If down = soft.','ARROW ➡️ VOLUME KICK: Column 1 = Kick. Don\'t make red - stay green.','ARROW ➡️ VOLUME VOICE: Column 4 = Voice. Put a bit higher than Melody - hear words.','EQ: Remove lows on Melody - let only Bass be low.']}},
-{id:6,cat:'RAP GASY',title:{mg:'6. Rap Gasy COMPLET',fr:'6. Rap Gasy COMPLET',en:'6. Rap Gasy COMPLETE'},steps:{
-mg:['RAP GASY = BPM 90-95. Beat tsotra - 808 malefaka - melody piano.','FLOW: Miteny 4 fehezanteny - miala aina - miteny indray.','TENY: Soraty toy ny miteny @ namana.','REFRAIN: Fehezanteny 1 fohy - miverimberina.','FANAZARAN-TENA: Soraty Couplet 8 bar anio @ fiainanao.'],
-fr:['RAP GASY = BPM 90-95. Beat simple - 808 doux - mélodie piano.','FLOW: Dis 4 phrases - respire - dis encore.','PAROLES: Écris comme tu parles à un ami.','REFRAIN: 1 phrase courte - qui se répète.','EXERCICE: Écris un Couplet de 8 bars aujourd\'hui sur ta vie.'],
-en:['RAP GASY = BPM 90-95. Simple beat - soft 808 - piano melody.','FLOW: Say 4 sentences - breathe - say again.','LYRICS: Write like talking to friend.','CHORUS: 1 short sentence - repeating.','EXERCISE: Write 8 bar Verse today about your life.']}}
-];
-function playNote(f){try{let c=new (window.AudioContext||window.webkitAudioContext)();let o=c.createOscillator();let g=c.createGain();o.type='triangle';o.frequency.value=f;g.gain.value=0.3;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+1);o.stop(c.currentTime+1);}catch(e){}}
-function toggleCell(el){el.classList.toggle('on'); if(el.classList.contains('on')) playNote(150);}
-function flDiagram(){
-return `<div class="fl">
-<div class="fl-top">
-<span>☰ FILE</span><span class="play">▶ PLAY</span><span>⏹ STOP</span><span>🔴 REC</span><span class="bpm">🎵 BPM: 120 ⬅️ Hafaingan'ny hira</span><span class="vol">🔊 VOLUME: 80% ⬅️ Hery ny feo</span><span>💾 SAVE</span>
-</div>
-<div class="fl-body">
-<div class="fl-box"><b>⬅️ BROWSER</b><p>Trano fitahirizana feo<br>📁 Kick<br>📁 Clap<br>📁 Sample<br>📁 Loop</p><span class="arrow">⬅️ Flèche manondro BROWSER = Eo alaina ny feo</span></div>
-<div class="fl-box active"><b>⬆️ CHANNEL RACK</b><p>🔴 KICK - 1,5,9,13<br>🟡 CLAP - 5,13<br>🟢 HI-HAT - isaky ny 2<br>🔵 808 - C2</p><span class="arrow">⬆️ Flèche manondro CHANNEL RACK = Eo ametrahana feo</span></div>
-<div class="fl-box"><b>➡️ MIXER</b><p>1: KICK 🔊<br>2: CLAP 🔊<br>3: MELODY 🔊<br>4: VOIX 🔊</p><span class="arrow">➡️ Flèche manondro MIXER = Eo anadiovana feo</span></div>
-</div>
-<div class="fl-body" style="grid-template-columns:1fr 1fr">
-<div class="fl-box"><b>🎹 PIANO ROLL</b><p>⬜ Note fotsy: C D E F G A B<br>⬛ Note mainty: C# D# F# G# A#<br>⬆️ Miakatra = feo avo<br>⬇️ Midina = feo ambany</p><span class="arrow">🎹 Flèche manondro PIANO ROLL = Eo anaovana melody</span></div>
-<div class="fl-box"><b>⬇️ PLAYLIST</b><p>🟦 INTRO - 8s - melody fotsiny<br>🟩 COUPLET - Kick + Bass<br>🟥 REFRAIN - REHETRA<br>⬜ OUTRO - esorina tsikelikely</p><span class="arrow">⬇️ Flèche manondro PLAYLIST = Eo andaminana hira</span></div>
-</div>
-</div>`;
-}
-function legend(){
-return `<div class="legend">
-<div><b>▶ PLAY ➡️</b> - Flèche manondro PLAY = Manomboka ny hira</div>
-<div><b>🔊 VOLUME ➡️</b> - Flèche manondro VOLUME = Hery ny feo - 80% = tsara, 100% = mafy, MENA = ratsy</div>
-<div><b>🎵 BPM ➡️</b> - Flèche manondro BPM = Hafaingan'ny hira - 90 = Rap Gasy, 140 = Trap</div>
-<div><b>📁 BROWSER ➡️</b> - Flèche manondro BROWSER = Eo alaina feo</div>
-<div><b>🥁 CHANNEL RACK ➡️</b> - Flèche manondro CHANNEL RACK = Eo ametrahana Kick / Clap / Hat</div>
-<div><b>🎹 PIANO ROLL ➡️</b> - Flèche manondro PIANO ROLL = Eo anaovana melody</div>
-<div><b>⬇️ PLAYLIST ➡️</b> - Flèche manondro PLAYLIST = Eo andaminana Intro / Couplet / Refrain</div>
-<div><b>🎚️ MIXER ➡️</b> - Flèche manondro MIXER = Eo anadiovana feo - Volume isaky ny feo</div>
-</div>`;
-}
-function render(){
-const t=T[lang];
-let html=`<h1>${t.title}</h1><p>${t.sub}</p><div class="lang">
-<button class="${lang==='mg'?'active':''}" onclick="setLang('mg')">🇲🇬 Gasy</button>
-<button class="${lang==='fr'?'active':''}" onclick="setLang('fr')">🇫🇷 Français</button>
-<button class="${lang==='en'?'active':''}" onclick="setLang('en')">🇬🇧 English</button></div>`;
-if(!current){
-html+=`<h2>${t.guide}</h2><p>${t.tap}</p>`;
-html+=flDiagram();
-html+=legend();
-html+=`<div><b>${t.piano}</b><div class="piano"><div class="key" onclick="playNote(261)">C</div><div class="key black" onclick="playNote(277)">C#</div><div class="key" onclick="playNote(293)">D</div><div class="key black" onclick="playNote(311)">D#</div><div class="key" onclick="playNote(329)">E</div><div class="key" onclick="playNote(349)">F</div><div class="key black" onclick="playNote(369)">F#</div><div class="key" onclick="playNote(392)">G</div><div class="key black" onclick="playNote(415)">G#</div><div class="key" onclick="playNote(440)">A</div><div class="key black" onclick="playNote(466)">A#</div><div class="key" onclick="playNote(493)">B</div></div><p class="note">C-E-G = Faly | A-C-E = Rap Gasy</p></div>`;
-html+=`<div><b>${t.beatmaker}</b><div class="grid">`;
-let rows=[{n:'KICK',c:'kick'},{n:'CLAP',c:'clap'},{n:'HI-HAT',c:'hat'}];
-rows.forEach(r=>{html+=`<span class="note">${r.n}</span>`; for(let i=0;i<16;i++){let on=(r.n==='KICK'&&[0,4,8,12].includes(i))||(r.n==='CLAP'&&[4,12].includes(i))||(r.n==='HI-HAT'&&i%2===0)?' on':''; html+=`<div class="cell ${r.c}${on}" onclick="toggleCell(this)"></div>`;}});
-html+=`</div></div>`;
-html+=`<input placeholder="${t.search}" oninput="query=this.value;render()" value="${query}">`;
-let list=lessons.filter(l=>l.title[lang].toLowerCase().includes(query.toLowerCase())||l.steps[lang].join(' ').toLowerCase().includes(query.toLowerCase()));
-list.forEach(l=>{html+=`<div class="card" onclick="openLesson(${l.id})"><span class="badge">${l.cat}</span><h3 style="margin-top:8px">${l.title[lang]}</h3><p>${l.steps[lang][0]}</p></div>`});
-html+=`<div class="challenge"><b>🔥 CHALLENGE 7 ANDRO</b><br>Andro 1: Sary FL Studio • 2: Beat • 3: Rap Gasy • 4: Mixer • 5: Hira Feno • 6: Export • 7: Alefaso #BoyProf</div>`;
-}else{
-let l=lessons.find(x=>x.id===current);
-html+=`<button class="back" onclick="current=null;render()">${t.back}</button><h2>${l.title[lang]}</h2>`;
-if(l.id===1){html+=flDiagram()+legend();}
-if(l.id===2){html+=`<div class="mini"><b>🥁 CHANNEL RACK - SARY</b><br>🔴 <b>KICK ➡️</b> Flèche mena manondro KICK = FO - 1,5,9,13<br>🟡 <b>CLAP ➡️</b> Flèche mavo manondro CLAP = KAPOKA - 5,13<br>🟢 <b>HI-HAT ➡️</b> Flèche maitso manondro HI-HAT = GADONA - isaky ny 2</div>`;}
-if(l.id===3){html+=`<div class="mini"><b>🎹 PIANO ROLL - SARY</b><br>⬜ Flèche manondro boaty fotsy = Note fotsy C D E<br>⬛ Flèche manondro boaty mainty = Note mainty C# D#<br>⬆️ Flèche miakatra = Feo avo ⬇️ Flèche midina = Feo ambany</div><div class="piano"><div class="key" onclick="playNote(261)">C</div><div class="key" onclick="playNote(329)">E</div><div class="key" onclick="playNote(392)">G</div><div class="key" onclick="playNote(440)">A</div></div>`;}
-if(l.id===4){html+=`<div class="mini"><b>⬇️ PLAYLIST - SARY</b><br>🟦 <b>INTRO ➡️</b> Flèche manondro INTRO = Melody fotsiny<br>🟩 <b>COUPLET ➡️</b> Flèche manondro COUPLET = Miteny<br>🟥 <b>REFRAIN ➡️</b> Flèche manondro REFRAIN = REHETRA</div>`;}
-if(l.id===5){html+=`<div class="mini"><b>🎚️ MIXER - SARY</b><br>🔊 <b>VOLUME KICK ➡️</b> Flèche manondro VOLUME KICK = Hery ny Kick - aza atao mena<br>🔊 <b>VOLUME VOIX ➡️</b> Flèche manondro VOLUME VOIX = Hery ny feo - ambony kely<br>🔊 <b>VOLUME MELODY ➡️</b> Flèche manondro VOLUME MELODY = Hery ny melody - ambany kely</div>`;}
-l.steps[lang].forEach((s,i)=>{html+=`<div class="step"><b>Étape ${i+1}:</b> ${s}</div>`});
-html+=`<button style="background:#ff6a00;color:#fff;width:100%;margin-top:12px" onclick="current=null;render()">${t.understood}</button>`;
-}
-document.getElementById('app').innerHTML=html;
-}
-function setLang(l){lang=l;localStorage.setItem('lang',l);render()}
-function openLesson(id){current=id;render()}
-render();
-</script>
-</body>
-</html>
+{id:0,cat:'PC • INSTALL',title:{mg:'0. Ahoana ny fametrahana FL Studio @ PC?',fr:'0. Comment installer FL Studio sur PC?',en:'0. How to install FL Studio on PC?'},steps:{
+mg:['FL STUDIO = LOGICIEL PC - Windows / Mac. TSY application phone.','@ PC: Sokafy Chrome @ PC > "FL Studio download" > Site Image-Line > Download Trial GRATUIT.','Install: Double-clic @ .exe > Next > Install > Finish.','CLAVIER PC: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, ESPACE = Play.','SOURIS PC: Clic gauche = Choisir, Clic droit = Menu, Molette = Zoom.'],
+fr:['FL STUDIO = LOGICIEL PC - Windows / Mac. PAS une application phone.','Sur PC: Ouvre Chrome sur PC > "FL Studio download" > Site Image-Line > Download Trial GRATUIT.','Install: Double-clic sur .exe > Next > Install > Finish.','CLAVIER PC: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, ESPACE = Play.','SOURIS PC: Clic gauche = Choisir, Clic droit = Menu, Molette = Zoom.'],
+en:['FL STUDIO = PC SOFTWARE - Windows / Mac. NOT a phone
