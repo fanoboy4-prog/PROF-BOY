@@ -10,7 +10,7 @@ body{background:#111;color:#fff;font-family:sans-serif;padding:14px;margin:0}
 button{padding:12px 16px;border-radius:12px;border:none;font-weight:bold;cursor:pointer}
 .lang button{background:#222;color:#fff;margin:4px}
 .lang button.active{background:#ff6a00}
-input{width:100%;padding:14px;border-radius:12px;border:none;margin:14px 0;font-size:16px}
+input,select{width:100%;padding:14px;border-radius:12px;border:none;margin:8px 0;font-size:16px;box-sizing:border-box}
 .card{background:#1e1e1e;padding:16px;border-radius:16px;margin:10px 0;cursor:pointer}
 .card h3{margin:0 0 6px;color:#ff6a00}
 .step{background:#2a2a2a;padding:14px;border-radius:12px;margin:8px 0;line-height:1.6}
@@ -38,202 +38,152 @@ input{width:100%;padding:14px;border-radius:12px;border:none;margin:14px 0;font-
 .cell{background:#222;height:28px;border-radius:4px;cursor:pointer}
 .cell.on{background:#ff6a00}
 .challenge{background:linear-gradient(90deg,#ff6a00,#ff0055);padding:16px;border-radius:16px;margin:12px 0}
-.mini{border:2px solid #444;border-radius:14px;padding:12px;margin:10px 0;background:#1a1a1a}
-.kbd{background:#000;color:#ff6a00;padding:3px 7px;border-radius:6px;border:1px solid #555;font-weight:bold}
+.welcome{background:#1e1e1e;padding:20px;border-radius:20px;margin:10px 0}
+.welcome h1{color:#ff6a00;margin:0 0 8px}
+.opt{border:2px solid #444;border-radius:12px;padding:12px;margin:6px 0;cursor:pointer;background:#222}
+.opt.sel{border-color:#ff6a00;background:#2a1a00}
+.bigbtn{background:#ff6a00;color:#fff;width:100%;padding:16px;font-size:18px;margin-top:12px}
+.profile{background:#222;padding:12px;border-radius:12px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-let lang = "mg";
-let current = null;
-let query = "";
-let D = {
-mg: {
-title:"BOY PROF OFFLINE",
-sub:"FL STUDIO SUR PC - 3 Langues - Gasy / Francais / English",
-pcbar:"FL STUDIO SUR PC - TSY PHONE - Ity app ity = TOROLALANA @ Phone - Ny FL Studio tena izy = @ PC",
-search:"Anontanio... ex: volume, mixer, piano roll...",
-back:"Miverina",
-understood:"Azoko - Lesona manaraka",
-guide:"FL STUDIO SUR PC - SARY INTERFACE PC",
-tap:"Tsindrio ny bokotra langue eo ambony - hiova daholo ny soratra!",
-piano:"PIANO ROLL - TSINDIO NY NOTE",
-beat:"BEATMAKER - TSINDIO NY BOATY",
-bpmL:"Hafaingan ny hira @ PC",
-volL:"Hery ny feo @ PC",
-browser:"BROWSER @ PC",
-browserD:"Trano fitahirizana feo @ PC - Kick - Clap - Sample",
-browserA:"Fleche manondro BROWSER @ PC = Double-clic @ souris",
-rack:"CHANNEL RACK @ PC",
-rackA:"Fleche manondro CHANNEL RACK @ PC = Clic @ souris",
-mixer:"MIXER @ PC",
-mixerA:"Fleche manondro MIXER @ PC = Tariho volume @ souris",
-pianoR:"PIANO ROLL @ PC",
-pianoA:"Fleche manondro PIANO ROLL @ PC = Eo anaovana melody @ souris",
-playlist:"PLAYLIST @ PC",
-playlistA:"Fleche manondro PLAYLIST @ PC = Eo andaminana hira @ souris",
-white:"Note fotsy: C D E F G A B",
-black:"Note mainty: C# D# F# G# A#",
-up:"Miakatra = feo avo",
-down:"Midina = feo ambany",
-intro:"INTRO - 8s - melody fotsiny",
-couplet:"COUPLET - Kick + Bass",
-refrain:"REFRAIN - REHETRA",
-outro:"OUTRO - esorina tsikelikely",
-happy:"C-E-G = Faly",
-sad:"A-C-E = Rap Gasy",
-active:"Langue active: Gasy",
-leg1:"PC IHANY - TSY PHONE - FL Studio = Logiciel PC",
-leg2:"PLAY - @ PC - Tsindrio ESPACE @ clavier PC",
-leg3:"VOLUME - Fleche manondro VOLUME = Tariho @ souris PC - 80% = tsara",
-leg4:"BPM - Fleche manondro BPM = Soraty @ clavier PC - 90 = Rap Gasy",
-leg5:"BROWSER - Double-clic @ souris",
-leg6:"CHANNEL RACK - Clic @ souris - F6",
-leg7:"PIANO ROLL - Clic droit @ souris - F7",
-leg8:"PLAYLIST - Tariho @ souris - F5",
-leg9:"MIXER - Tariho volume @ souris - F9",
-challenge:"CHALLENGE 7 ANDRO @ PC - Andro 1: Install @ PC - 2: Beat - 3: Rap Gasy - 4: Mixer - 5: Hira Feno - 6: Export - 7: Alefaso #BoyProf"
-},
-fr: {
-title:"BOY PROF OFFLINE",
-sub:"FL STUDIO SUR PC - 3 Langues - Gasy / Francais / English",
-pcbar:"FL STUDIO SUR PC - PAS PHONE - Cette app = GUIDE sur Phone - Le vrai FL Studio = sur PC",
-search:"Pose ta question... ex: volume, mixer, piano roll...",
-back:"Retour",
-understood:"J ai compris - Lecon suivante",
-guide:"FL STUDIO SUR PC - IMAGE INTERFACE PC",
-tap:"Clique sur le bouton langue en haut - tout le texte va changer !",
-piano:"PIANO ROLL - CLIQUE UNE NOTE",
-beat:"BEATMAKER - CLIQUE LES CASES",
-bpmL:"Vitesse de la chanson sur PC",
-volL:"Force du son sur PC",
-browser:"BROWSER SUR PC",
-browserD:"Maison ou on stocke les sons sur PC - Kick - Clap - Sample",
-browserA:"Fleche pointe BROWSER SUR PC = Double-clic a la souris",
-rack:"CHANNEL RACK SUR PC",
-rackA:"Fleche pointe CHANNEL RACK SUR PC = Clic a la souris",
-mixer:"MIXER SUR PC",
-mixerA:"Fleche pointe MIXER SUR PC = Glisse volume a la souris",
-pianoR:"PIANO ROLL SUR PC",
-pianoA:"Fleche pointe PIANO ROLL SUR PC = La on fait la melodie a la souris",
-playlist:"PLAYLIST SUR PC",
-playlistA:"Fleche pointe PLAYLIST SUR PC = La on arrange la chanson a la souris",
-white:"Note blanche: C D E F G A B",
-black:"Note noire: C# D# F# G# A#",
-up:"Monte = son aigu",
-down:"Descend = son grave",
-intro:"INTRO - 8s - melodie seule",
-couplet:"COUPLET - Kick + Bass",
-refrain:"REFRAIN - TOUT",
-outro:"OUTRO - enleve petit a petit",
-happy:"C-E-G = Joyeux",
-sad:"A-C-E = Rap Gasy",
-active:"Langue active: Francais",
-leg1:"PC SEULEMENT - PAS PHONE - FL Studio = Logiciel PC",
-leg2:"PLAY - Sur PC - Appuie ESPACE sur clavier PC",
-leg3:"VOLUME - Fleche pointe VOLUME = Glisse a la souris PC - 80% = bon",
-leg4:"BPM - Fleche pointe BPM = Tape sur clavier PC - 90 = Rap Gasy",
-leg5:"BROWSER - Double-clic a la souris",
-leg6:"CHANNEL RACK - Clic a la souris - F6",
-leg7:"PIANO ROLL - Clic droit a la souris - F7",
-leg8:"PLAYLIST - Glisse a la souris - F5",
-leg9:"MIXER - Glisse volume a la souris - F9",
-challenge:"CHALLENGE 7 JOURS SUR PC - Jour 1: Install sur PC - 2: Beat - 3: Rap Gasy - 4: Mixer - 5: Chanson Complete - 6: Export - 7: Poste #BoyProf"
-},
-en: {
-title:"BOY PROF OFFLINE",
-sub:"FL STUDIO ON PC - 3 Languages - Gasy / Francais / English",
-pcbar:"FL STUDIO ON PC - NOT PHONE - This app = GUIDE on Phone - Real FL Studio = on PC",
-search:"Ask... ex: volume, mixer, piano roll...",
-back:"Back",
-understood:"Got it - Next lesson",
-guide:"FL STUDIO ON PC - PC INTERFACE IMAGE",
-tap:"Tap language button on top - all text will change!",
-piano:"PIANO ROLL - TAP A NOTE",
-beat:"BEATMAKER - TAP THE BOXES",
-bpmL:"Speed of song on PC",
-volL:"Power of sound on PC",
-browser:"BROWSER ON PC",
-browserD:"House where sounds are stored on PC - Kick - Clap - Sample",
-browserA:"Arrow points BROWSER ON PC = Double-click with mouse",
-rack:"CHANNEL RACK ON PC",
-rackA:"Arrow points CHANNEL RACK ON PC = Click with mouse",
-mixer:"MIXER ON PC",
-mixerA:"Arrow points MIXER ON PC = Drag volume with mouse",
-pianoR:"PIANO ROLL ON PC",
-pianoA:"Arrow points PIANO ROLL ON PC = There you make melody with mouse",
-playlist:"PLAYLIST ON PC",
-playlistA:"Arrow points PLAYLIST ON PC = There you arrange song with mouse",
-white:"White note: C D E F G A B",
-black:"Black note: C# D# F# G# A#",
-up:"Up = high sound",
-down:"Down = low sound",
-intro:"INTRO - 8s - melody only",
-couplet:"VERSE - Kick + Bass",
-refrain:"CHORUS - ALL",
-outro:"OUTRO - remove slowly",
-happy:"C-E-G = Happy",
-sad:"A-C-E = Rap Gasy",
-active:"Active language: English",
-leg1:"PC ONLY - NOT PHONE - FL Studio = PC Software",
-leg2:"PLAY - On PC - Press SPACE on PC keyboard",
-leg3:"VOLUME - Arrow points VOLUME = Drag with PC mouse - 80% = good",
-leg4:"BPM - Arrow points BPM = Type on PC keyboard - 90 = Rap Gasy",
-leg5:"BROWSER - Double-click with mouse",
-leg6:"CHANNEL RACK - Click with mouse - F6",
-leg7:"PIANO ROLL - Right-click with mouse - F7",
-leg8:"PLAYLIST - Drag with mouse - F5",
-leg9:"MIXER - Drag volume with mouse - F9",
-challenge:"CHALLENGE 7 DAYS ON PC - Day 1: Install on PC - 2: Beat - 3: Rap Gasy - 4: Mixer - 5: Full Song - 6: Export - 7: Post #BoyProf"
-}
+var lang = localStorage.getItem("boy_lang") || "mg";
+var current = null;
+var query = "";
+var profile = null;
+try{ profile = JSON.parse(localStorage.getItem("boy_profile")||"null"); }catch(e){ profile=null; }
+var tmpLang = lang;
+var tmpLevel = "debutant";
+var tmpGoal = "Rap Gasy";
+var tmpPC = "Oui - Manana PC";
+
+var D = {
+mg:{title:"BOY PROF OFFLINE",sub:"FL STUDIO SUR PC - 3 Langues",pcbar:"FL STUDIO SUR PC - TSY PHONE - Ity app ity = TOROLALANA @ Phone - Ny FL Studio tena izy = @ PC",search:"Anontanio... ex: volume, mixer...",back:"Miverina",understood:"Azoko - Lesona manaraka",guide:"FL STUDIO SUR PC - SARY INTERFACE PC",tap:"Tsindrio ny bokotra langue - hiova daholo!",piano:"PIANO ROLL - TSINDIO NY NOTE",beat:"BEATMAKER",bpmL:"Hafaingan ny hira @ PC",volL:"Hery ny feo @ PC",browser:"BROWSER @ PC",browserD:"Trano fitahirizana feo @ PC - Kick - Clap - Sample",browserA:"Fleche manondro BROWSER @ PC = Double-clic @ souris",rack:"CHANNEL RACK @ PC",rackA:"Fleche manondro CHANNEL RACK @ PC = Clic @ souris",mixer:"MIXER @ PC",mixerA:"Fleche manondro MIXER @ PC = Tariho volume @ souris",pianoR:"PIANO ROLL @ PC",pianoA:"Fleche manondro PIANO ROLL @ PC = Eo anaovana melody",playlist:"PLAYLIST @ PC",playlistA:"Fleche manondro PLAYLIST @ PC = Eo andaminana hira",white:"Note fotsy: C D E F G A B",black:"Note mainty: C# D# F# G# A#",up:"Miakatra = feo avo",down:"Midina = feo ambany",intro:"INTRO - 8s - melody fotsiny",couplet:"COUPLET - Kick + Bass",refrain:"REFRAIN - REHETRA",outro:"OUTRO - esorina tsikelikely",happy:"C-E-G = Faly",sad:"A-C-E = Rap Gasy",active:"Langue active:",leg1:"PC IHANY - TSY PHONE - FL Studio = Logiciel PC",leg2:"PLAY - @ PC - Tsindrio ESPACE @ clavier PC",leg3:"VOLUME - Fleche manondro VOLUME = Tariho @ souris PC - 80% = tsara",leg4:"BPM - Fleche manondro BPM = Soraty @ clavier PC - 90 = Rap Gasy",leg5:"BROWSER - Double-clic @ souris",leg6:"CHANNEL RACK - Clic @ souris - F6",leg7:"PIANO ROLL - Clic droit @ souris - F7",leg8:"PLAYLIST - Tariho @ souris - F5",leg9:"MIXER - Tariho volume @ souris - F9",challenge:"CHALLENGE 7 ANDRO @ PC",hello:"Salama",edit:"Ovay",welcomeTitle:"TONGA SOA @ BOY PROF",welcomeSub:"Andao hanamboatra ny kaontinao - 30 segondra fotsiny - dia miditra @ lesona!",nameLabel:"1. Anaranao ?",namePh:"Soraty anaranao... ex: Fano, Boy",langLabel:"2. Langue tianao ?",levelLabel:"3. Niveau-nao ?",level1:"Debutant - Tsy mbola nahay",level2:"Efa kely - Efa nanandrana",level3:"Intermediaire - Efa manao beat",goalLabel:"4. Tanjonao ?",goal1:"Rap Gasy",goal2:"Trap / Drill",goal3:"Afro / Amapiano",goal4:"Hira feno - Mihira",pcLabel:"5. Manana PC ve ?",pcYes:"Oui - Manana PC",pcNo:"Tsy mbola - Fa hijery aloha",startBtn:"MIDITRA @ LESONA - GO",skip:"Tsidiho - Miditra mivantana"},
+fr:{title:"BOY PROF OFFLINE",sub:"FL STUDIO SUR PC - 3 Langues",pcbar:"FL STUDIO SUR PC - PAS PHONE - Cette app = GUIDE sur Phone - Le vrai FL Studio = sur PC",search:"Pose ta question... ex: volume, mixer...",back:"Retour",understood:"J ai compris - Lecon suivante",guide:"FL STUDIO SUR PC - IMAGE INTERFACE PC",tap:"Clique sur le bouton langue - tout va changer !",piano:"PIANO ROLL - CLIQUE UNE NOTE",beat:"BEATMAKER",bpmL:"Vitesse de la chanson sur PC",volL:"Force du son sur PC",browser:"BROWSER SUR PC",browserD:"Maison ou on stocke les sons sur PC - Kick - Clap - Sample",browserA:"Fleche pointe BROWSER SUR PC = Double-clic a la souris",rack:"CHANNEL RACK SUR PC",rackA:"Fleche pointe CHANNEL RACK SUR PC = Clic a la souris",mixer:"MIXER SUR PC",mixerA:"Fleche pointe MIXER SUR PC = Glisse volume a la souris",pianoR:"PIANO ROLL SUR PC",pianoA:"Fleche pointe PIANO ROLL SUR PC = La on fait la melodie",playlist:"PLAYLIST SUR PC",playlistA:"Fleche pointe PLAYLIST SUR PC = La on arrange la chanson",white:"Note blanche: C D E F G A B",black:"Note noire: C# D# F# G# A#",up:"Monte = son aigu",down:"Descend = son grave",intro:"INTRO - 8s - melodie seule",couplet:"COUPLET - Kick + Bass",refrain:"REFRAIN - TOUT",outro:"OUTRO - enleve petit a petit",happy:"C-E-G = Joyeux",sad:"A-C-E = Rap Gasy",active:"Langue active:",leg1:"PC SEULEMENT - PAS PHONE - FL Studio = Logiciel PC",leg2:"PLAY - Sur PC - Appuie ESPACE sur clavier PC",leg3:"VOLUME - Fleche pointe VOLUME = Glisse a la souris PC - 80% = bon",leg4:"BPM - Fleche pointe BPM = Tape sur clavier PC - 90 = Rap Gasy",leg5:"BROWSER - Double-clic a la souris",leg6:"CHANNEL RACK - Clic a la souris - F6",leg7:"PIANO ROLL - Clic droit a la souris - F7",leg8:"PLAYLIST - Glisse a la souris - F5",leg9:"MIXER - Glisse volume a la souris - F9",challenge:"CHALLENGE 7 JOURS SUR PC",hello:"Salut",edit:"Modifier",welcomeTitle:"BIENVENUE @ BOY PROF",welcomeSub:"On cree ton compte - 30 secondes seulement - puis on entre dans les lecons !",nameLabel:"1. Ton prenom ?",namePh:"Ecris ton prenom... ex: Fano, Boy",langLabel:"2. Ta langue ?",levelLabel:"3. Ton niveau ?",level1:"Debutant - Je ne sais pas encore",level2:"Un peu - J ai deja essaye",level3:"Intermediaire - Je fais deja des beats",goalLabel:"4. Ton objectif ?",goal1:"Rap Gasy",goal2:"Trap / Drill",goal3:"Afro / Amapiano",goal4:"Chanson complete - Chanter",pcLabel:"5. Tu as un PC ?",pcYes:"Oui - J ai un PC",pcNo:"Pas encore - Je regarde d abord",startBtn:"ENTRER DANS LES LECONS - GO",skip:"Passer - Entrer direct"},
+en:{title:"BOY PROF OFFLINE",sub:"FL STUDIO ON PC - 3 Languages",pcbar:"FL STUDIO ON PC - NOT PHONE - This app = GUIDE on Phone - Real FL Studio = on PC",search:"Ask... ex: volume, mixer...",back:"Back",understood:"Got it - Next lesson",guide:"FL STUDIO ON PC - PC INTERFACE IMAGE",tap:"Tap language button - all text will change!",piano:"PIANO ROLL - TAP A NOTE",beat:"BEATMAKER",bpmL:"Speed of song on PC",volL:"Power of sound on PC",browser:"BROWSER ON PC",browserD:"House where sounds are stored on PC - Kick - Clap - Sample",browserA:"Arrow points BROWSER ON PC = Double-click with mouse",rack:"CHANNEL RACK ON PC",rackA:"Arrow points CHANNEL RACK ON PC = Click with mouse",mixer:"MIXER ON PC",mixerA:"Arrow points MIXER ON PC = Drag volume with mouse",pianoR:"PIANO ROLL ON PC",pianoA:"Arrow points PIANO ROLL ON PC = There you make melody",playlist:"PLAYLIST ON PC",playlistA:"Arrow points PLAYLIST ON PC = There you arrange song",white:"White note: C D E F G A B",black:"Black note: C# D# F# G# A#",up:"Up = high sound",down:"Down = low sound",intro:"INTRO - 8s - melody only",couplet:"VERSE - Kick + Bass",refrain:"CHORUS - ALL",outro:"OUTRO - remove slowly",happy:"C-E-G = Happy",sad:"A-C-E = Rap Gasy",active:"Active language:",leg1:"PC ONLY - NOT PHONE - FL Studio = PC Software",leg2:"PLAY - On PC - Press SPACE on PC keyboard",leg3:"VOLUME - Arrow points VOLUME = Drag with PC mouse - 80% = good",leg4:"BPM - Arrow points BPM = Type on PC keyboard - 90 = Rap Gasy",leg5:"BROWSER - Double-click with mouse",leg6:"CHANNEL RACK - Click with mouse - F6",leg7:"PIANO ROLL - Right-click with mouse - F7",leg8:"PLAYLIST - Drag with mouse - F5",leg9:"MIXER - Drag volume with mouse - F9",challenge:"CHALLENGE 7 DAYS ON PC",hello:"Hello",edit:"Edit",welcomeTitle:"WELCOME @ BOY PROF",welcomeSub:"Let us create your account - 30 seconds only - then enter lessons!",nameLabel:"1. Your name ?",namePh:"Write your name... ex: Fano, Boy",langLabel:"2. Your language ?",levelLabel:"3. Your level ?",level1:"Beginner - I do not know yet",level2:"A little - I already tried",level3:"Intermediate - I already make beats",goalLabel:"4. Your goal ?",goal1:"Rap Gasy",goal2:"Trap / Drill",goal3:"Afro / Amapiano",goal4:"Full song - Sing",pcLabel:"5. Do you have a PC ?",pcYes:"Yes - I have a PC",pcNo:"Not yet - I watch first",startBtn:"ENTER LESSONS - GO",skip:"Skip - Enter direct"}
 };
-let lessons = [
-{id:0,cat:"PC - INSTALL",title:{mg:"0. Ahoana ny fametrahana FL Studio @ PC ?",fr:"0. Comment installer FL Studio sur PC ?",en:"0. How to install FL Studio on PC ?"},steps:{mg:["FL STUDIO = LOGICIEL PC - Windows / Mac. TSY application phone.","@ PC: Sokafy Chrome @ PC - FL Studio download - Site Image-Line - Download Trial GRATUIT.","Install: Double-clic @ .exe - Next - Install - Finish.","CLAVIER PC: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, ESPACE = Play.","SOURIS PC: Clic gauche = Choisir, Clic droit = Menu, Molette = Zoom."],fr:["FL STUDIO = LOGICIEL PC - Windows / Mac. PAS une application phone.","Sur PC: Ouvre Chrome sur PC - FL Studio download - Site Image-Line - Download Trial GRATUIT.","Install: Double-clic sur .exe - Next - Install - Finish.","CLAVIER PC: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, ESPACE = Play.","SOURIS PC: Clic gauche = Choisir, Clic droit = Menu, Molette = Zoom."],en:["FL STUDIO = PC SOFTWARE - Windows / Mac. NOT a phone app.","On PC: Open Chrome on PC - FL Studio download - Image-Line site - Download Trial FREE.","Install: Double-click .exe - Next - Install - Finish.","PC KEYBOARD: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, SPACE = Play.","PC MOUSE: Left-click = Choose, Right-click = Menu, Wheel = Zoom."]}},
-{id:1,cat:"PC - ECRAN",title:{mg:"1. Ecran FL Studio @ PC - Cage rehetra + Fleche",fr:"1. Ecran FL Studio sur PC - Toutes les Cases + Fleche",en:"1. FL Studio Screen on PC - All Boxes + Arrow"},steps:{mg:["JEREO @ PC: Ecran FL Studio @ PC - mitovy @ sary.","BPM @ PC: Tsindrio isa - soraty 90 Rap Gasy - Enter @ clavier PC.","VOLUME @ PC: Tariho @ souris - 80% = tsara. Raha mena = ratsy.","BROWSER @ PC: Double-clic @ Kick - mandeha @ Channel Rack.","MIXER @ PC: Tariho volume @ souris.","PLAYLIST @ PC: Tariho @ souris ny boaty - Intro / Couplet / Refrain."],fr:["REGARDE SUR PC: Ecran FL Studio sur PC - pareil que image.","BPM SUR PC: Clique chiffre - tape 90 Rap Gasy - Entree sur clavier PC.","VOLUME SUR PC: Glisse a la souris - 80% = bon. Si rouge = mauvais.","BROWSER SUR PC: Double-clic sur Kick - va dans Channel Rack.","MIXER SUR PC: Glisse volume a la souris.","PLAYLIST SUR PC: Glisse a la souris les boites - Intro / Couplet / Refrain."],en:["LOOK ON PC: FL Studio screen on PC - same as image.","BPM ON PC: Click number - type 90 Rap Gasy - Enter on PC keyboard.","VOLUME ON PC: Drag with mouse - 80% = good. If red = bad.","BROWSER ON PC: Double-click Kick - goes to Channel Rack.","MIXER ON PC: Drag volume with mouse.","PLAYLIST ON PC: Drag with mouse boxes - Intro / Verse / Chorus."]}},
-{id:2,cat:"PC - BEAT",title:{mg:"2. Beat @ PC - Drum + 808",fr:"2. Beat sur PC - Drum + 808",en:"2. Beat on PC - Drum + 808"},steps:{mg:["@ PC: BPM 90 @ Rap Gasy, 140 @ Trap.","@ PC - CHANNEL RACK F6: Clic @ boaty - KICK @ 1,5,9,13 - CLAP @ 5,13 - HI-HAT @ isaky ny 2.","@ PC - 808: Clic droit @ 808 - Piano Roll - apetraho @ C2 @ souris.","@ PC - ESPACE = Play. Henoy @ casque PC.","SECRET PC: Ovay velocity @ souris - clic droit @ boaty - velocity ambany = malefaka."],fr:["Sur PC: BPM 90 pour Rap Gasy, 140 pour Trap.","Sur PC - CHANNEL RACK F6: Clic sur cases - KICK sur 1,5,9,13 - CLAP sur 5,13 - HI-HAT tous les 2.","Sur PC - 808: Clic droit sur 808 - Piano Roll - place sur C2 avec souris.","Sur PC - ESPACE = Play. Ecoute au casque PC.","SECRET PC: Change velocity avec souris - clic droit sur case - velocity bas = doux."],en:["On PC: BPM 90 for Rap Gasy, 140 for Trap.","On PC - CHANNEL RACK F6: Click boxes - KICK on 1,5,9,13 - CLAP on 5,13 - HI-HAT every 2.","On PC - 808: Right-click 808 - Piano Roll - put on C2 with mouse.","On PC - SPACE = Play. Listen on PC headphone.","PC SECRET: Change velocity with mouse - right-click box - low velocity = soft."]}},
-{id:3,cat:"PC - PIANO ROLL",title:{mg:"3. Piano Roll @ PC - Melody",fr:"3. Piano Roll sur PC - Melodie",en:"3. Piano Roll on PC - Melody"},steps:{mg:["@ PC: Clic droit @ instrument - Piano Roll F7.","@ PC @ SOURIS: Clic gauche = mametraka note, Clic droit = mamafa, Tariho = manalava.","C-E-G = Faly. A-C-E = Rap Gasy.","@ PC: Tsindrio ESPACE - henoy."],fr:["Sur PC: Clic droit sur instrument - Piano Roll F7.","Sur PC a la SOURIS: Clic gauche = mettre note, Clic droit = effacer, Glisse = allonger.","C-E-G = Joyeux. A-C-E = Rap Gasy.","Sur PC: Appuie ESPACE - ecoute."],en:["On PC: Right-click instrument - Piano Roll F7.","On PC with MOUSE: Left-click = put note, Right-click = delete, Drag = lengthen.","C-E-G = Happy. A-C-E = Rap Gasy.","On PC: Press SPACE - listen."]}},
-{id:4,cat:"PC - RAP GASY",title:{mg:"4. Rap Gasy @ PC - COMPLET",fr:"4. Rap Gasy sur PC - COMPLET",en:"4. Rap Gasy on PC - COMPLETE"},steps:{mg:["@ PC: BPM 90-95. Beat tsotra - 808 malefaka - melody piano.","@ PC: Mirakitra feo: REC @ PC - Miteny @ micro PC - STOP.","FLOW: Miteny 4 fehezanteny - miala aina - miteny indray.","REFRAIN: Fehezanteny 1 fohy - miverimberina.","EXPORT @ PC: File - Export - MP3 - 320kbps - Desktop."],fr:["Sur PC: BPM 90-95. Beat simple - 808 doux - melodie piano.","Sur PC: Enregistrer voix: REC sur PC - Parle au micro PC - STOP.","FLOW: Dis 4 phrases - respire - dis encore.","REFRAIN: 1 phrase courte - qui se repete.","EXPORT SUR PC: File - Export - MP3 - 320kbps - Bureau."],en:["On PC: BPM 90-95. Simple beat - soft 808 - piano melody.","On PC: Record voice: REC on PC - Speak to PC mic - STOP.","FLOW: Say 4 sentences - breathe - say again.","CHORUS: 1 short sentence - repeating.","EXPORT ON PC: File - Export - MP3 - 320kbps - Desktop."]}},
-{id:5,cat:"PC - MIXER",title:{mg:"5. Mixer @ PC - Volume isaky ny feo",fr:"5. Mixer sur PC - Volume de chaque son",en:"5. Mixer on PC - Volume of each sound"},steps:{mg:["@ PC: F9 = Mixer.","@ PC @ SOURIS: Tariho volume miakatra / midina.","VOLUME KICK: Tsanganana 1 - aza atao mena.","VOLUME VOIX: Tsanganana 4 - ambony kely noho Melody.","@ PC: Henoy @ casque PC, baffle PC, phone."],fr:["Sur PC: F9 = Mixer.","Sur PC a la SOURIS: Glisse volume en haut / en bas.","VOLUME KICK: Colonne 1 - ne mets pas en rouge.","VOLUME VOIX: Colonne 4 - un peu plus haut que Melodie.","Sur PC: Ecoute au casque PC, enceinte PC, phone."],en:["On PC: F9 = Mixer.","On PC with MOUSE: Drag volume up / down.","VOLUME KICK: Column 1 - do not make red.","VOLUME VOICE: Column 4 - a bit higher than Melody.","On PC: Listen on PC headphone, PC speaker, phone."]}}
+var lessons = [
+{id:0,cat:"PC - INSTALL",title:{mg:"0. Ahoana ny fametrahana FL Studio @ PC ?",fr:"0. Comment installer FL Studio sur PC ?",en:"0. How to install FL Studio on PC ?"},steps:{mg:["FL STUDIO = LOGICIEL PC - Windows / Mac. TSY application phone.","@ PC: Sokafy Chrome @ PC - FL Studio download - Site Image-Line - Download Trial GRATUIT.","Install: Double-clic @ .exe - Next - Install - Finish.","CLAVIER PC: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, ESPACE = Play."],fr:["FL STUDIO = LOGICIEL PC - Windows / Mac. PAS une application phone.","Sur PC: Ouvre Chrome sur PC - FL Studio download - Site Image-Line - Download Trial GRATUIT.","Install: Double-clic sur .exe - Next - Install - Finish.","CLAVIER PC: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, ESPACE = Play."],en:["FL STUDIO = PC SOFTWARE - Windows / Mac. NOT a phone app.","On PC: Open Chrome on PC - FL Studio download - Image-Line site - Download Trial FREE.","Install: Double-click .exe - Next - Install - Finish.","PC KEYBOARD: F6 = Channel Rack, F7 = Piano Roll, F5 = Playlist, F9 = Mixer, SPACE = Play."]}},
+{id:1,cat:"PC - ECRAN",title:{mg:"1. Ecran FL Studio @ PC - Cage rehetra + Fleche",fr:"1. Ecran FL Studio sur PC - Toutes les Cases + Fleche",en:"1. FL Studio Screen on PC - All Boxes + Arrow"},steps:{mg:["JEREO @ PC: Ecran FL Studio @ PC - mitovy @ sary.","BPM @ PC: Tsindrio isa - soraty 90 Rap Gasy - Enter @ clavier PC.","VOLUME @ PC: Tariho @ souris - 80% = tsara."],fr:["REGARDE SUR PC: Ecran FL Studio sur PC - pareil que image.","BPM SUR PC: Clique chiffre - tape 90 Rap Gasy - Entree sur clavier PC.","VOLUME SUR PC: Glisse a la souris - 80% = bon."],en:["LOOK ON PC: FL Studio screen on PC - same as image.","BPM ON PC: Click number - type 90 Rap Gasy - Enter on PC keyboard.","VOLUME ON PC: Drag with mouse - 80% = good."]}},
+{id:2,cat:"PC - BEAT",title:{mg:"2. Beat @ PC - Drum + 808",fr:"2. Beat sur PC - Drum + 808",en:"2. Beat on PC - Drum + 808"},steps:{mg:["@ PC: BPM 90 @ Rap Gasy, 140 @ Trap.","@ PC - CHANNEL RACK F6: Clic @ boaty - KICK @ 1,5,9,13 - CLAP @ 5,13 - HI-HAT @ isaky ny 2.","@ PC - 808: Clic droit @ 808 - Piano Roll - apetraho @ C2 @ souris."],fr:["Sur PC: BPM 90 pour Rap Gasy, 140 pour Trap.","Sur PC - CHANNEL RACK F6: Clic sur cases - KICK sur 1,5,9,13 - CLAP sur 5,13 - HI-HAT tous les 2.","Sur PC - 808: Clic droit sur 808 - Piano Roll - place sur C2 avec souris."],en:["On PC: BPM 90 for Rap Gasy, 140 for Trap.","On PC - CHANNEL RACK F6: Click boxes - KICK on 1,5,9,13 - CLAP on 5,13 - HI-HAT every 2.","On PC - 808: Right-click 808 - Piano Roll - put on C2 with mouse."]}},
+{id:3,cat:"PC - PIANO ROLL",title:{mg:"3. Piano Roll @ PC - Melody",fr:"3. Piano Roll sur PC - Melodie",en:"3. Piano Roll on PC - Melody"},steps:{mg:["@ PC: Clic droit @ instrument - Piano Roll F7.","@ PC @ SOURIS: Clic gauche = mametraka note, Clic droit = mamafa.","C-E-G = Faly. A-C-E = Rap Gasy."],fr:["Sur PC: Clic droit sur instrument - Piano Roll F7.","Sur PC a la SOURIS: Clic gauche = mettre note, Clic droit = effacer.","C-E-G = Joyeux. A-C-E = Rap Gasy."],en:["On PC: Right-click instrument - Piano Roll F7.","On PC with MOUSE: Left-click = put note, Right-click = delete.","C-E-G = Happy. A-C-E = Rap Gasy."]}},
+{id:4,cat:"PC - RAP GASY",title:{mg:"4. Rap Gasy @ PC - COMPLET",fr:"4. Rap Gasy sur PC - COMPLET",en:"4. Rap Gasy on PC - COMPLETE"},steps:{mg:["@ PC: BPM 90-95. Beat tsotra - 808 malefaka - melody piano.","@ PC: Mirakitra feo: REC @ PC - Miteny @ micro PC - STOP.","FLOW: Miteny 4 fehezanteny - miala aina - miteny indray.","REFRAIN: Fehezanteny 1 fohy - miverimberina."],fr:["Sur PC: BPM 90-95. Beat simple - 808 doux - melodie piano.","Sur PC: Enregistrer voix: REC sur PC - Parle au micro PC - STOP.","FLOW: Dis 4 phrases - respire - dis encore.","REFRAIN: 1 phrase courte - qui se repete."],en:["On PC: BPM 90-95. Simple beat - soft 808 - piano melody.","On PC: Record voice: REC on PC - Speak to PC mic - STOP.","FLOW: Say 4 sentences - breathe - say again.","CHORUS: 1 short sentence - repeating."]}},
+{id:5,cat:"PC - MIXER",title:{mg:"5. Mixer @ PC - Volume isaky ny feo",fr:"5. Mixer sur PC - Volume de chaque son",en:"5. Mixer on PC - Volume of each sound"},steps:{mg:["@ PC: F9 = Mixer.","@ PC @ SOURIS: Tariho volume miakatra / midina.","VOLUME KICK: Tsanganana 1 - aza atao mena.","VOLUME VOIX: Tsanganana 4 - ambony kely noho Melody."],fr:["Sur PC: F9 = Mixer.","Sur PC a la SOURIS: Glisse volume en haut / en bas.","VOLUME KICK: Colonne 1 - ne mets pas en rouge.","VOLUME VOIX: Colonne 4 - un peu plus haut que Melodie."],en:["On PC: F9 = Mixer.","On PC with MOUSE: Drag volume up / down.","VOLUME KICK: Column 1 - do not make red.","VOLUME VOICE: Column 4 - a bit higher than Melody."]}}
 ];
-function playNote(f){try{let c=new (window.AudioContext||window.webkitAudioContext)();let o=c.createOscillator();let g=c.createGain();o.type="triangle";o.frequency.value=f;g.gain.value=0.3;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+1);o.stop(c.currentTime+1);}catch(e){}}
+function playNote(f){try{var c=new (window.AudioContext||window.webkitAudioContext)();var o=c.createOscillator();var g=c.createGain();o.type="triangle";o.frequency.value=f;g.gain.value=0.3;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+1);o.stop(c.currentTime+1);}catch(e){}}
 function toggleCell(el){el.classList.toggle("on"); if(el.classList.contains("on")) playNote(150);}
 function flDiagram(){
-let t=D[lang];
-return "<div class=fl><div class=fl-top><span>FILE PC</span><span class=play>PLAY ESPACE PC</span><span>STOP</span><span>REC Micro PC</span><span class=bpm>BPM: 120 - "+t.bpmL+"</span><span class=vol>VOLUME: 80% - "+t.volL+"</span></div><div class=fl-body><div class=fl-box><b>"+t.browser+"</b><p>"+t.browserD+"</p><span class=arrow>"+t.browserA+"</span></div><div class=fl-box><b>"+t.rack+"</b><p>KICK 1,5,9,13 - CLAP 5,13 - HI-HAT isaky ny 2 - 808 C2</p><span class=arrow>"+t.rackA+"</span></div><div class=fl-box><b>"+t.mixer+"</b><p>1: KICK - 2: CLAP - 3: MELODY - 4: VOIX</p><span class=arrow>"+t.mixerA+"</span></div></div><div class=fl-body style=grid-template-columns:1fr_1fr><div class=fl-box><b>"+t.pianoR+"</b><p>"+t.white+"<br>"+t.black+"<br>"+t.up+"<br>"+t.down+"</p><span class=arrow>"+t.pianoA+"</span></div><div class=fl-box><b>"+t.playlist+"</b><p>"+t.intro+"<br>"+t.couplet+"<br>"+t.refrain+"<br>"+t.outro+"</p><span class=arrow>"+t.playlistA+"</span></div></div></div>";
+var t=D[lang];
+var h="";
+h+="<div class=\"fl\"><div class=\"fl-top\"><span>FILE PC</span><span class=\"play\">PLAY ESPACE PC</span><span>STOP</span><span>REC Micro PC</span><span class=\"bpm\">BPM: 120 - "+t.bpmL+"</span><span class=\"vol\">VOLUME: 80% - "+t.volL+"</span></div>";
+h+="<div class=\"fl-body\"><div class=\"fl-box\"><b>"+t.browser+"</b><p>"+t.browserD+"</p><span class=\"arrow\">"+t.browserA+"</span></div><div class=\"fl-box\"><b>"+t.rack+"</b><p>KICK 1,5,9,13 - CLAP 5,13 - HI-HAT - 808 C2</p><span class=\"arrow\">"+t.rackA+"</span></div><div class=\"fl-box\"><b>"+t.mixer+"</b><p>1: KICK - 2: CLAP - 3: MELODY - 4: VOIX</p><span class=\"arrow\">"+t.mixerA+"</span></div></div>";
+h+="<div class=\"fl-body\" style=\"grid-template-columns:1fr 1fr\"><div class=\"fl-box\"><b>"+t.pianoR+"</b><p>"+t.white+"<br>"+t.black+"<br>"+t.up+"<br>"+t.down+"</p><span class=\"arrow\">"+t.pianoA+"</span></div><div class=\"fl-box\"><b>"+t.playlist+"</b><p>"+t.intro+"<br>"+t.couplet+"<br>"+t.refrain+"<br>"+t.outro+"</p><span class=\"arrow\">"+t.playlistA+"</span></div></div></div>";
+return h;
 }
 function legend(){
-let t=D[lang];
-return "<div class=legend><div><b>"+t.leg1+"</b></div><div><b>"+t.leg2+"</b></div><div><b>"+t.leg3+"</b></div><div><b>"+t.leg4+"</b></div><div><b>"+t.leg5+"</b></div><div><b>"+t.leg6+"</b></div><div><b>"+t.leg7+"</b></div><div><b>"+t.leg8+"</b></div><div><b>"+t.leg9+"</b></div></div>";
+var t=D[lang];
+return "<div class=\"legend\"><div><b>"+t.leg1+"</b></div><div><b>"+t.leg2+"</b></div><div><b>"+t.leg3+"</b></div><div><b>"+t.leg4+"</b></div><div><b>"+t.leg5+"</b></div><div><b>"+t.leg6+"</b></div><div><b>"+t.leg7+"</b></div><div><b>"+t.leg8+"</b></div><div><b>"+t.leg9+"</b></div></div>";
+}
+function renderWelcome(){
+var t=D[tmpLang];
+var h="";
+h+="<div class=\"welcome\"><h1>"+t.welcomeTitle+"</h1><p>"+t.welcomeSub+"</p>";
+h+="<label>"+t.nameLabel+"</label><input id=\"inName\" placeholder=\""+t.namePh+"\" value=\""+(profile?profile.name:"")+"\">";
+h+="<label>"+t.langLabel+"</label><div class=\"lang\"><button id=\"btn-mg\" class=\""+(tmpLang==="mg"?"active":"")+"\">Gasy</button><button id=\"btn-fr\" class=\""+(tmpLang==="fr"?"active":"")+"\">Francais</button><button id=\"btn-en\" class=\""+(tmpLang==="en"?"active":"")+"\">English</button></div>";
+h+="<label>"+t.levelLabel+"</label>";
+h+="<div class=\"opt "+(tmpLevel==="debutant"?"sel":"")+"\" id=\"lv1\">"+t.level1+"</div>";
+h+="<div class=\"opt "+(tmpLevel==="kely"?"sel":"")+"\" id=\"lv2\">"+t.level2+"</div>";
+h+="<div class=\"opt "+(tmpLevel==="inter"?"sel":"")+"\" id=\"lv3\">"+t.level3+"</div>";
+h+="<label>"+t.goalLabel+"</label>";
+h+="<select id=\"selGoal\"><option>"+t.goal1+"</option><option>"+t.goal2+"</option><option>"+t.goal3+"</option><option>"+t.goal4+"</option></select>";
+h+="<label>"+t.pcLabel+"</label>";
+h+="<div class=\"opt "+(tmpPC.indexOf("Oui")===0||tmpPC.indexOf("Yes")===0?"sel":"")+"\" id=\"pc1\">"+t.pcYes+"</div>";
+h+="<div class=\"opt "+(tmpPC.indexOf("Tsy")===0||tmpPC.indexOf("Pas")===0||tmpPC.indexOf("Not")===0?"sel":"")+"\" id=\"pc2\">"+t.pcNo+"</div>";
+h+="<button class=\"bigbtn\" id=\"btnStart\">"+t.startBtn+"</button>";
+h+="<button style=\"background:#333;color:#fff;width:100%;margin-top:8px\" id=\"btnSkip\">"+t.skip+"</button></div>";
+document.getElementById("app").innerHTML=h;
+document.getElementById("btn-mg").onclick=function(){tmpLang="mg";renderWelcome();};
+document.getElementById("btn-fr").onclick=function(){tmpLang="fr";renderWelcome();};
+document.getElementById("btn-en").onclick=function(){tmpLang="en";renderWelcome();};
+document.getElementById("lv1").onclick=function(){tmpLevel="debutant";renderWelcome();};
+document.getElementById("lv2").onclick=function(){tmpLevel="kely";renderWelcome();};
+document.getElementById("lv3").onclick=function(){tmpLevel="inter";renderWelcome();};
+document.getElementById("pc1").onclick=function(){tmpPC=t.pcYes;renderWelcome();};
+document.getElementById("pc2").onclick=function(){tmpPC=t.pcNo;renderWelcome();};
+document.getElementById("btnStart").onclick=function(){
+var nm=document.getElementById("inName").value||"Boy";
+var gl=document.getElementById("selGoal").value;
+profile={name:nm,level:tmpLevel,goal:gl,pc:tmpPC};
+lang=tmpLang;
+localStorage.setItem("boy_lang",lang);
+localStorage.setItem("boy_profile",JSON.stringify(profile));
+current=null; render();
+};
+document.getElementById("btnSkip").onclick=function(){
+profile={name:"Boy",level:"debutant",goal:"Rap Gasy",pc:"Oui"};
+lang=tmpLang; localStorage.setItem("boy_lang",lang); localStorage.setItem("boy_profile",JSON.stringify(profile)); render();
+};
 }
 function render(){
-let t=D[lang];
-let html="<div class=pc>"+t.pcbar+"</div><h1>"+t.title+"</h1><p>"+t.sub+"</p><div class=lang><button class="+(lang==="mg"?"active":"")+" onclick=setLang('mg')>Gasy</button><button class="+(lang==="fr"?"active":"")+" onclick=setLang('fr')>Francais</button><button class="+(lang==="en"?"active":"")+" onclick=setLang('en')>English</button></div><p style=background:#222;padding:10px;border-radius:10px>"+t.active+" - Tsindrio bokotra hafa - hiova daholo!</p>";
+if(!profile){ renderWelcome(); return; }
+var t=D[lang];
+var html="";
+html+="<div class=\"pc\">"+t.pcbar+"</div>";
+html+="<div class=\"profile\"><span><b>"+t.hello+" "+profile.name+" !</b> - "+profile.goal+" - "+profile.level+"</span><button id=\"btnEdit\" style=\"background:#333;color:#fff\">"+t.edit+"</button></div>";
+html+="<h1>"+t.title+"</h1><p>"+t.sub+"</p>";
+html+="<div class=\"lang\"><button id=\"lg-mg\" class=\""+(lang==="mg"?"active":"")+"\">Gasy</button><button id=\"lg-fr\" class=\""+(lang==="fr"?"active":"")+"\">Francais</button><button id=\"lg-en\" class=\""+(lang==="en"?"active":"")+"\">English</button></div>";
+html+="<p style=\"background:#222;padding:10px;border-radius:10px\">"+t.active+" <b>"+(lang==="mg"?"Gasy":lang==="fr"?"Francais":"English")+"</b> - Tsindrio bokotra hafa - hiova daholo!</p>";
 if(!current){
 html+="<h2>"+t.guide+"</h2><p>"+t.tap+"</p>";
 html+=flDiagram();
 html+=legend();
-html+="<div><b>"+t.piano+"</b><div class=piano><div class=key onclick=playNote(261)>C</div><div class='key black' onclick=playNote(277)>C#</div><div class=key onclick=playNote(293)>D</div><div class='key black' onclick=playNote(311)>D#</div><div class=key onclick=playNote(329)>E</div><div class=key onclick=playNote(349)>F</div><div class='key black' onclick=playNote(369)>F#</div><div class=key onclick=playNote(392)>G</div><div class='key black' onclick=playNote(415)>G#</div><div class=key onclick=playNote(440)>A</div><div class='key black' onclick=playNote(466)>A#</div><div class=key onclick=playNote(493)>B</div></div><p>"+t.happy+" | "+t.sad+"</p></div>";
-html+="<div><b>"+t.beat+"</b><div class=grid>";
-let rows=[{n:"KICK"},{n:"CLAP"},{n:"HI-HAT"}];
-rows.forEach(function(r){html+="<span>KICK</span>".replace("KICK",r.n); for(let i=0;i<16;i++){let on=(r.n==="KICK"&&[0,4,8,12].includes(i))||(r.n==="CLAP"&&[4,12].includes(i))||(r.n==="HI-HAT"&&i%2===0)?" on":""; html+="<div class='cell"+on+"' onclick=toggleCell(this)></div>";}});
-html+="</div></div>";
-html+="<input placeholder='"+t.search+"' oninput='query=this.value;render()' value='"+query+"'>";
-let list=lessons.filter(function(l){return l.title[lang].toLowerCase().includes(query.toLowerCase())||l.steps[lang].join(" ").toLowerCase().includes(query.toLowerCase())});
-list.forEach(function(l){html+="<div class=card onclick=openLesson("+l.id+")><span class=badge>"+l.cat+"</span><h3>"+l.title[lang]+"</h3><p>"+l.steps[lang][0]+"</p></div>"});
-html+="<div class=challenge><b>"+t.challenge+"</b></div>";
-}else{
-let l=lessons.find(function(x){return x.id===current});
-html+="<button class=back onclick='current=null;render()'>"+t.back+"</button><h2>"+l.title[lang]+"</h2>";
-if(l.id===1){html+=flDiagram()+legend();}
-if(l.id===3){html+="<div class=mini><b>"+t.pianoR+" - SOURIS</b><br>Clic gauche = mametraka - Clic droit = mamafa</div>";}
-l.steps[lang].forEach(function(s,i){html+="<div class=step><b>Etape "+(i+1)+":</b> "+s+"</div>"});
-html+="<button style=background:#ff6a00;color:#fff;width:100%;margin-top:12px onclick='current=null;render()'>"+t.understood+"</button>";
-}
+html+="<div><b>"+t.piano+"</b><div class=\"piano\"><div class=\"key\" id=\"k1\">C</div><div class=\"key black\" id=\"k2\">C#</div><div class=\"key\" id=\"k3\">D</div><div class=\"key black\" id=\"k4\">D#</div><div class=\"key\" id=\"k5\">E</div><div class=\"key\" id=\"k6\">F</div><div class=\"key black\" id=\"k7\">F#</div><div class=\"key\" id=\"k8\">G</div><div class=\"key black\" id=\"k9\">G#</div><div class=\"key\" id=\"k10\">A</div><div class=\"key black\" id=\"k11\">A#</div><div class=\"key\" id=\"k12\">B</div></div><p>"+t.happy+" | "+t.sad+"</p></div>";
+html+="<div><b>"+t.beat+"</b><div class=\"grid\" id=\"beatGrid\"></div></div>";
+html+="<input id=\"searchBox\" placeholder=\""+t.search+"\" value=\""+query+"\">";
+html+="<div id=\"listBox\"></div>";
+html+="<div class=\"challenge\"><b>"+t.challenge+"</b></div>";
 document.getElementById("app").innerHTML=html;
+document.getElementById("lg-mg").onclick=function(){lang="mg";localStorage.setItem("boy_lang",lang);render();};
+document.getElementById("lg-fr").onclick=function(){lang="fr";localStorage.setItem("boy_lang",lang);render();};
+document.getElementById("lg-en").onclick=function(){lang="en";localStorage.setItem("boy_lang",lang);render();};
+document.getElementById("btnEdit").onclick=function(){profile=null;renderWelcome();};
+var notes=[261,277,293,311,329,349,369,392,415,440,466,493];
+for(var i=1;i<=12;i++){ (function(idx){ document.getElementById("k"+idx).onclick=function(){playNote(notes[idx-1]);}; })(i); }
+var grid=document.getElementById("beatGrid");
+var rows=["KICK","CLAP","HI-HAT"];
+rows.forEach(function(r){
+var s=document.createElement("span"); s.innerText=r; grid.appendChild(s);
+for(var j=0;j<16;j++){ var d=document.createElement("div"); d.className="cell"; if((r==="KICK"&&[0,4,8,12].indexOf(j)>=0)||(r==="CLAP"&&[4,12].indexOf(j)>=0)||(r==="HI-HAT"&&j%2===0)){d.className="cell on";} d.onclick=function(){toggleCell(this);}; grid.appendChild(d); }
+});
+document.getElementById("searchBox").oninput=function(){query=this.value;renderList();};
+function renderList(){
+var lb=document.getElementById("listBox"); if(!lb) return;
+var list=lessons.filter(function(l){return l.title[lang].toLowerCase().indexOf(query.toLowerCase())>=0||l.steps[lang].join(" ").toLowerCase().indexOf(query.toLowerCase())>=0;});
+var lh="";
+list.forEach(function(l){ lh+="<div class=\"card\" data-id=\""+l.id+"\"><span class=\"badge\">"+l.cat+"</span><h3>"+l.title[lang]+"</h3><p>"+l.steps[lang][0]+"</p></div>"; });
+lb.innerHTML=lh;
+var cards=lb.querySelectorAll(".card");
+cards.forEach(function(c){ c.onclick=function(){ current=parseInt(c.getAttribute("data-id")); render(); }; });
 }
-function setLang(l){lang=l;render()}
-function openLesson(id){current=id;render()}
+renderList();
+}else{
+var l=lessons.find(function(x){return x.id===current});
+html+="<button class=\"back\" id=\"btnBack\">"+t.back+"</button><h2>"+l.title[lang]+"</h2>";
+if(l.id===1){html+=flDiagram()+legend();}
+if(l.id===3){html+="<div class=\"mini\"><b>"+t.pianoR+" - SOURIS</b><br>Clic gauche = mametraka - Clic droit = mamafa</div>";}
+l.steps[lang].forEach(function(s,i){html+="<div class=\"step\"><b>Etape "+(i+1)+":</b> "+s+"</div>";});
+html+="<button style=\"background:#ff6a00;color:#fff;width:100%;margin-top:12px\" id=\"btnNext\">"+t.understood+"</button>";
+document.getElementById("app").innerHTML=html;
+document.getElementById("lg-mg").onclick=function(){lang="mg";localStorage.setItem("boy_lang",lang);render();};
+document.getElementById("lg-fr").onclick=function(){lang="fr";localStorage.setItem("boy_lang",lang);render();};
+document.getElementById("lg-en").onclick=function(){lang="en";localStorage.setItem("boy_lang",lang);render();};
+document.getElementById("btnEdit").onclick=function(){profile=null;renderWelcome();};
+document.getElementById("btnBack").onclick=function(){current=null;render();};
+document.getElementById("btnNext").onclick=function(){current=null;render();};
+}
+}
 render();
 </script>
 </body>
